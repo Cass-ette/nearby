@@ -1,0 +1,34 @@
+{
+  "post_titles": [
+    {"zh":"路口的银杏树","en":"Ginkgo at the corner"},
+    {"zh":"雨后的法桐","en":"Plane tree after rain"},
+    {"zh":"楼下早餐店","en":"Breakfast shop downstairs"},
+    {"zh":"7路公交终点","en":"End of the 7 bus line"},
+    {"zh":"复兴里的猫","en":"Cat at Fuxing Li"},
+    {"zh":"转角的旧招牌","en":"Old sign at the corner"},
+    {"zh":"天桥下面","en":"Under the footbridge"},
+    {"zh":"三号门","en":"Gate 3"},
+    {"zh":"河边的椅子","en":"Riverside chair"}
+  ],
+  "post_texts": [
+    {"zh":"今天也走这条路上班。看着银杏叶一天比一天黄。","en":"Took this road to work again. The ginkgo leaves turn yellower each day."},
+    {"zh":"楼下早餐店的爷爷今天给我多塞了一个包子。","en":"The grandpa at breakfast slipped me an extra bun today."},
+    {"zh":"雨后的法桐格外亮。","en":"Plane trees look brighter after rain."},
+    {"zh":"这条路我走了十年，第一次发现这家小店。","en":"Ten years on this road, first time I noticed this shop."},
+    {"zh":"突然觉得，'附近'不是一个地方，是一种心情。","en":"Suddenly: 'nearby' isn't a place, it's a mood."},
+    {"zh":"小店的灯一直亮着。从我有记忆起就这样。","en":"The shop's light is always on. As long as I remember."},
+    {"zh":"今天发现了 5 种不同的纹理。最喜欢的是墙上斑驳的漆。","en":"Found 5 different textures today. My favorite: the peeling paint on a wall."},
+    {"zh":"老板说这里开了 28 年了。","en":"The owner said this shop has been here 28 years."},
+    {"zh":"桥下有人下棋。我看了 20 分钟。","en":"Under the bridge, people playing chess. I watched for 20 minutes."},
+    {"zh":"黄昏的天空是粉色和灰色的。","en":"Dusk sky was pink and gray."}
+  ],
+  "responses": [
+    {"zh":"嗯，我也路过了。","en":"Yes, I walked past too."},
+    {"zh":"看完想出去走走。","en":"Reading this makes me want to go outside."},
+    {"zh":"谢谢记录。","en":"Thanks for documenting this."},
+    {"zh":"看见你说的这棵树了。","en":"I saw the tree you wrote about."},
+    {"zh":"我也是这么觉得的。","en":"I feel the same way."},
+    {"zh":"下次我也走这条路。","en":"I'll take this road next time."},
+    {"zh":"文字好温柔。","en":"Your words feel gentle."}
+  ]
+}

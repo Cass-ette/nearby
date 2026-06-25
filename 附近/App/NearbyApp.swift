@@ -19,7 +19,13 @@ struct NearbyApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .task { @MainActor in
+                    let context = container.mainContext
+                    let bank = TaskBank.loadSync()
+                    await MockSeeder.seedIfNeeded(context: context, taskBank: bank)
+                }
         }
         .modelContainer(container)
     }
 }
+

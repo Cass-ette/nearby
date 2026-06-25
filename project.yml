@@ -58,3 +58,4 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.cassette.nearbyTests
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/附近.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/附近"
         BUNDLE_LOADER: "$(TEST_HOST)"
+        GENERATE_INFOPLIST_FILE: "YES"

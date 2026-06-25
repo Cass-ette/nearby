@@ -1666,21 +1666,21 @@ struct ImageFilterTests {
 
     @Test func originalFilterReturnsSameImagePixels() throws {
         let image = makeTestImage()
-        let filtered = try ImageFilter.apply(filter: .original, to: image)
+        let filtered = try ImageFilterEngine.apply(filter: .original, to: image)
         #expect(filtered.size == image.size)
     }
 
     @Test func allFiltersProduceNonNilImage() throws {
         let image = makeTestImage()
         for filter in ImageFilter.allCases {
-            let result = try ImageFilter.apply(filter: filter, to: image)
+            let result = try ImageFilterEngine.apply(filter: filter, to: image)
             #expect(result.size.width > 0, "Filter \(filter.rawValue) produced empty image")
         }
     }
 
     @Test func inkFilterProducesGrayscale() throws {
         let image = makeTestImage()
-        let filtered = try ImageFilter.apply(filter: .ink, to: image)
+        let filtered = try ImageFilterEngine.apply(filter: .ink, to: image)
         // Convert to CIImage to sample pixels — at minimum, saturation should be reduced
         let ci = CIImage(image: filtered)!
         #expect(ci.extent.width > 0)
@@ -2762,8 +2762,8 @@ import SwiftData
 struct RecordView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Query private var allTasks: [DailyTask] // placeholder, replaced via task property
     @State private var viewModel = RecordViewModel()
+    @State private var showError: Bool = false
 
     // Resolve today's task from TaskBank (passed in or computed)
     var todayTask: DailyTask {
@@ -2851,11 +2851,14 @@ struct RecordView: View {
                     .disabled(!viewModel.canPublish || viewModel.isSaving)
                 }
             }
-            .alert("Error", isPresented: .constant(viewModel.errorMessage != nil), actions: {
+            .alert("Error", isPresented: $showError, actions: {
                 Button("OK", role: .cancel) { viewModel.errorMessage = nil }
             }, message: {
                 Text(viewModel.errorMessage ?? "")
             })
+            .onChange(of: viewModel.errorMessage) { _, newValue in
+                showError = (newValue != nil)
+            }
         }
         .paperBackground()
         .task {
@@ -3117,6 +3120,7 @@ enum MockSeeder {
         let now = Date()
 
         // 30-50 mock posts scattered across past 30 days
+        var insertedPosts: [Post] = []
         for i in 0..<40 {
             let task = taskBank[i % taskBank.count]
             let user = users[i % users.count]
@@ -3161,6 +3165,7 @@ enum MockSeeder {
                 authorName: user.name
             )
             context.insert(post)
+            insertedPosts.append(post)
         }
 
         // 5-8 of these should be timestamped today, for the today-task
@@ -3199,6 +3204,7 @@ enum MockSeeder {
                     authorName: user.name
                 )
                 context.insert(post)
+                insertedPosts.append(post)
             }
         }
 
@@ -3553,12 +3559,12 @@ git commit -m "feat: add MapViewModel with cluster loading"
 
 ---
 
-### Task 3.3: PhotoAnnotationView
+### Task 3.3: PhotoAnnotation
 
 **Files:**
-- Create: `附近/Features/Map/PhotoAnnotationView.swift`
+- Create: `附近/Features/Map/PhotoAnnotation.swift`
 
-- [ ] **Step 1: Write PhotoAnnotationView**
+- [ ] **Step 1: Write PhotoAnnotation**
 
 ```swift
 import SwiftUI
@@ -4285,34 +4291,16 @@ git commit -m "feat: build PostDetailView with responses + composer"
 
 - [ ] **Step 1: Add response seeding to MockSeeder**
 
-Append before `try? context.save()` in `seed(context:taskBank:)`:
+The existing `seed(context:taskBank:)` in Task 2.13 already collects inserted posts into `insertedPosts` array. Append the following block before `try? context.save()` at the end:
 
 ```swift
-// Add 0-3 mock responses per post (30% probability per slot)
+// Add 0-3 mock responses per post
 let responseTemplates = templates.responses
-let allPosts = (0..<40).map { i -> Post in
-    // Re-fetch the inserted posts (or re-construct)
-    // For simplicity, capture them during the loop above by collecting into an array first
-    fatalError("Refactor: collect inserted posts into array before this step")
-}
-```
-
-Actually, refactor the seeder to collect inserted posts in an array. Replace the loop variable scope:
-
-```swift
-var insertedPosts: [Post] = []
-for i in 0..<40 {
-    // ... existing post creation ...
-    context.insert(post)
-    insertedPosts.append(post)
-}
-
-// Add responses
 for post in insertedPosts {
     let responseCount = Int.random(in: 0...3)
     for j in 0..<responseCount {
-        let template = responseTemplates[(post.id.hashValue + j) % responseTemplates.count]
-        let user = users[(post.id.hashValue + j) % users.count]
+        let template = responseTemplates[(post.id.hashValue &+ j) % responseTemplates.count]
+        let user = users[(post.id.hashValue &+ j) % users.count]
         let response = Response(
             postId: post.id,
             text: template.localized(),
@@ -4322,6 +4310,39 @@ for post in insertedPosts {
         )
         context.insert(response)
     }
+}
+
+// Today's posts get a couple extra responses each
+if let todayTask = taskBank.first {
+    let todayPosts = insertedPosts.filter { $0.taskRef == todayTask.id }
+    for post in todayPosts.prefix(3) {
+        for j in 0..<2 {
+            let template = responseTemplates[(post.id.hashValue &+ j) % responseTemplates.count]
+            let user = users[(post.id.hashValue &+ j + 1) % users.count]
+            let response = Response(
+                postId: post.id,
+                text: template.localized(),
+                isOwn: false,
+                authorId: UUID(),
+                authorName: user.name
+            )
+            context.insert(response)
+        }
+    }
+}
+```
+
+**Pre-condition**: Task 2.13's MockSeeder must collect `insertedPosts`. If Task 2.13 was implemented as written, this array already exists. If not, refactor the loop:
+
+```swift
+// In seed(context:taskBank:), replace:
+//   for i in 0..<40 { ... context.insert(post) }
+// with:
+var insertedPosts: [Post] = []
+for i in 0..<40 {
+    // ... existing post creation ...
+    context.insert(post)
+    insertedPosts.append(post)
 }
 ```
 
@@ -4464,8 +4485,10 @@ enum Badge: String, CaseIterable, Identifiable {
     static func evaluate(posts: [Post], streak: Int) -> [Badge] {
         let ownPosts = posts.filter { $0.isOwn }
         let ownCount = ownPosts.count
-        let taskTypes = Set(ownPosts.compactMap { TaskBank.loadSync().first(where: { $0.id == $0.taskRef })?.type })
-        // ^ Note: above is O(n*m). For MVP, acceptable.
+        let taskIds = Set(ownPosts.map { $0.taskRef })
+        let taskTypes = Set(taskIds.compactMap { id in
+            TaskBank.loadSync().first(where: { $0.id == id })?.type
+        })
 
         var result: [Badge] = []
         if streak >= 7 { result.append(.sevenDay) }
@@ -4479,17 +4502,6 @@ enum Badge: String, CaseIterable, Identifiable {
     }
 }
 ```
-
-(Note: the `taskTypes` closure has a bug — `$0.taskRef` vs `$0.id` confusion. Fix:
-
-```swift
-let taskIds = Set(ownPosts.map { $0.taskRef })
-let taskTypes = Set(taskIds.compactMap { id in
-    TaskBank.loadSync().first(where: { $0.id == id })?.type
-})
-```
-
-Use this corrected version in the actual implementation.)
 
 - [ ] **Step 3: Run tests to verify they pass**
 
@@ -4832,32 +4844,16 @@ final class ArchiveViewModel {
 
     func monthLabel(_ key: String) -> String {
         let parts = key.split(separator: "-")
-        guard parts.count == 2,
-              let monthInt = Int(parts[1]) else { return key }
+        guard parts.count == 2, let monthInt = Int(parts[1]) else { return key }
         let lang = Locale.current.language.languageCode?.identifier ?? "zh"
+        let enMonths = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"]
         return lang == "en"
-            ? String(format: "%@ %s", parts[0], String(cString: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][monthInt - 1].utf8CString))
+            ? "\(enMonths[monthInt - 1]) \(parts[0])"
             : "\(parts[0]) 年 \(monthInt) 月"
     }
 }
 ```
-
-(Note: the monthLabel implementation has a bug — the String(cString:) syntax is wrong. Simplify to:
-
-```swift
-func monthLabel(_ key: String) -> String {
-    let parts = key.split(separator: "-")
-    guard parts.count == 2, let monthInt = Int(parts[1]) else { return key }
-    let lang = Locale.current.language.languageCode?.identifier ?? "zh"
-    let enMonths = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"]
-    return lang == "en"
-        ? "\(enMonths[monthInt - 1]) \(parts[0])"
-        : "\(parts[0]) 年 \(monthInt) 月"
-}
-```
-
-Use this in the implementation.)
 
 - [ ] **Step 2: Commit**
 

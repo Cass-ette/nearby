@@ -1,0 +1,15 @@
+{
+  "city": "上海",
+  "neighborhoods": [
+    {"id":"yuyuan_road","name_zh":"愚园路","name_en":"Yuyuan Road","district_zh":"静安","district_en":"Jing'an","centerLat":31.226,"centerLon":121.426,"radius":0.008},
+    {"id":"julu_road","name_zh":"巨鹿路","name_en":"Julu Road","district_zh":"静安","district_en":"Jing'an","centerLat":31.222,"centerLon":121.458,"radius":0.006},
+    {"id":"wukang_road","name_zh":"武康路","name_en":"Wukang Road","district_zh":"徐汇","district_en":"Xuhui","centerLat":31.215,"centerLon":121.434,"radius":0.007},
+    {"id":"anfu_road","name_zh":"安福路","name_en":"Anfu Road","district_zh":"徐汇","district_en":"Xuhui","centerLat":31.218,"centerLon":121.443,"radius":0.005},
+    {"id":"yongkang_road","name_zh":"永康路","name_en":"Yongkang Road","district_zh":"徐汇","district_en":"Xuhui","centerLat":31.210,"centerLon":121.451,"radius":0.005},
+    {"id":"tianzifang","name_zh":"田子坊","name_en":"Tianzifang","district_zh":"黄浦","district_en":"Huangpu","centerLat":31.210,"centerLon":121.466,"radius":0.005},
+    {"id":"sinan_road","name_zh":"思南路","name_en":"Sinan Road","district_zh":"黄浦","district_en":"Huangpu","centerLat":31.220,"centerLon":121.467,"radius":0.005},
+    {"id":"fuxing_middle","name_zh":"复兴中路","name_en":"Fuxing Middle Road","district_zh":"黄浦","district_en":"Huangpu","centerLat":31.218,"centerLon":121.462,"radius":0.007},
+    {"id":"hengshan_road","name_zh":"衡山路","name_en":"Hengshan Road","district_zh":"徐汇","district_en":"Xuhui","centerLat":31.205,"centerLon":121.439,"radius":0.006},
+    {"id":"xinhua_road","name_zh":"新华路","name_en":"Xinhua Road","district_zh":"长宁","district_en":"Changning","centerLat":31.214,"centerLon":121.421,"radius":0.007}
+  ]
+}

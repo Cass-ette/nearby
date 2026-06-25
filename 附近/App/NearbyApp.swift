@@ -18,14 +18,8 @@ struct NearbyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
         .modelContainer(container)
-    }
-}
-
-struct ContentView: View {
-    var body: some View {
-        Text("附近")
     }
 }

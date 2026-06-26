@@ -34,5 +34,6 @@ struct RootView: View {
             }
         }
         .background(Color.paper50.ignoresSafeArea())
+        .preferredColorScheme(.light)
     }
 }

@@ -5,6 +5,9 @@ struct TodayView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = TodayViewModel()
     @State private var taskBank: [DailyTask] = []
+    @State private var autoShowRecord: Bool = {
+        ProcessInfo.processInfo.arguments.contains("--show-record")
+    }()
 
     var body: some View {
         NavigationStack {
@@ -74,6 +77,10 @@ struct TodayView: View {
         .task {
             taskBank = TaskBank.loadSync()
             viewModel.load(modelContext: modelContext, taskBank: taskBank)
+            if autoShowRecord && !viewModel.hasCompletedToday {
+                viewModel.showRecord = true
+                autoShowRecord = false
+            }
         }
         .onChange(of: viewModel.showRecord) { _, newValue in
             if !newValue {

@@ -11,11 +11,15 @@ struct PostDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.l) {
                 if let image = UIImage(data: post.imageData) {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFill()
+                    Rectangle()
+                        .fill(Color.paper100)
                         .frame(maxWidth: .infinity)
                         .frame(height: 400)
+                        .overlay {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                        }
                         .clipped()
                 }
 

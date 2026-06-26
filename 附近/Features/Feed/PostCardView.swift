@@ -24,11 +24,15 @@ struct PostCardView: View {
             }
 
             if let image = UIImage(data: post.imageData) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
+                Rectangle()
+                    .fill(Color.paper100)
                     .frame(maxWidth: .infinity)
                     .frame(height: 320)
+                    .overlay {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                    }
                     .clipped()
                     .cornerRadius(Radius.image)
             }

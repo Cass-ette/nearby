@@ -63,10 +63,14 @@ struct TaskDetailView: View {
                                 selectedPost = post
                             } label: {
                                 if let thumb = UIImage(data: post.thumbnailData) {
-                                    Image(uiImage: thumb)
-                                        .resizable()
-                                        .scaledToFill()
+                                    Rectangle()
+                                        .fill(Color.paper100)
                                         .frame(height: 140)
+                                        .overlay {
+                                            Image(uiImage: thumb)
+                                                .resizable()
+                                                .scaledToFill()
+                                        }
                                         .clipped()
                                         .cornerRadius(Radius.image)
                                 }

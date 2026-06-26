@@ -41,11 +41,15 @@ struct TaskCardView: View {
             }
 
             if let refName = task.referenceImageName, let uiImage = UIImage(named: refName) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFill()
+                Rectangle()
+                    .fill(Color.paper100)
                     .frame(maxWidth: .infinity)
                     .frame(height: 160)
+                    .overlay {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                    }
                     .clipped()
                     .cornerRadius(Radius.image)
                     .overlay(Color.ink900.opacity(0.04))

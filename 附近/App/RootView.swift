@@ -32,7 +32,7 @@ struct RootView: View {
                             .tag(1)
 
                         FeedView()
-                            .tabItem { Label(NSLocalizedString("tab.feed", value: "时间流", comment: ""), systemImage: "rectangle.grid.2") }
+                            .tabItem { Label(NSLocalizedString("tab.feed", value: "时间流", comment: ""), systemImage: "rectangle.grid.2x2") }
                             .tag(2)
 
                         MineView()

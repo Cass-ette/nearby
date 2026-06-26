@@ -2,7 +2,14 @@ import SwiftUI
 
 struct RootView: View {
     @AppStorage("onboarding.completed") private var hasCompletedOnboarding = false
-    @State private var selectedTab = 0
+    @State private var selectedTab: Int = {
+        // Allow launching directly into a specific tab via --tab N
+        let args = ProcessInfo.processInfo.arguments
+        if let idx = args.firstIndex(of: "--tab"), idx + 1 < args.count, let n = Int(args[idx + 1]) {
+            return n
+        }
+        return 0
+    }()
 
     var body: some View {
         ZStack {

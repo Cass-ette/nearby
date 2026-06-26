@@ -37,6 +37,7 @@ struct TodayView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.paper50, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .containerBackground(Color.paper50, for: .navigation)
             .navigationDestination(for: String.self) { value in
                 if value == "archive" {
                     ArchiveView()

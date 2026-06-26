@@ -108,6 +108,7 @@ struct MineView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.paper50, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .containerBackground(Color.paper50, for: .navigation)
             .navigationDestination(item: $selectedPost) { post in
                 PostDetailView(post: post)
             }

@@ -42,6 +42,7 @@ struct MapView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.paper50, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .containerBackground(Color.paper50, for: .navigation)
             .navigationDestination(isPresented: $navigateToDetail) {
                 if let post = detailPost {
                     PostDetailView(post: post)

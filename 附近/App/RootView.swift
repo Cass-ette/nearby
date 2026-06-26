@@ -8,7 +8,6 @@ struct RootView: View {
         ZStack {
             Color.paper50
                 .ignoresSafeArea()
-                .background(Color.paper50)
 
             Group {
                 if !hasCompletedOnboarding {

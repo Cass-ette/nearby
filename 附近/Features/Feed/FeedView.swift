@@ -39,6 +39,7 @@ struct FeedView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.paper50, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .containerBackground(Color.paper50, for: .navigation)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Picker("Filter", selection: $viewModel.filter) {

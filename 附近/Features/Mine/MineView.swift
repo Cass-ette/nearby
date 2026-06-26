@@ -106,6 +106,8 @@ struct MineView: View {
             }
             .navigationTitle(NSLocalizedString("mine.nav_title", value: "我的", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.paper50, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .navigationDestination(item: $selectedPost) { post in
                 PostDetailView(post: post)
             }

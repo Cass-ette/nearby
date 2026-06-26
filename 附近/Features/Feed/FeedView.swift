@@ -37,6 +37,8 @@ struct FeedView: View {
             }
             .navigationTitle(NSLocalizedString("feed.nav_title", value: "附近", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.paper50, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Picker("Filter", selection: $viewModel.filter) {

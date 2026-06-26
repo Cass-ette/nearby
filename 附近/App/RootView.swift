@@ -29,7 +29,10 @@ struct RootView: View {
                         .tag(3)
                 }
                 .tint(.cinnabar)
+                .toolbarBackground(Color.paper50, for: .tabBar)
+                .toolbarBackground(.visible, for: .tabBar)
             }
         }
+        .background(Color.paper50.ignoresSafeArea())
     }
 }

@@ -40,6 +40,8 @@ struct MapView: View {
             }
             .navigationTitle(NSLocalizedString("map.nav_title", value: "附近的人在记录", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.paper50, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
             .navigationDestination(isPresented: $navigateToDetail) {
                 if let post = detailPost {
                     PostDetailView(post: post)

@@ -8,18 +8,16 @@ struct PhotoPickerButton: View {
     @State private var pickerItem: PhotosPickerItem?
 
     var body: some View {
-        ZStack {
-            if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 360)
-                    .clipped()
-                    .cornerRadius(Radius.image)
-            } else {
-                ZStack {
-                    Color.paper100
+        Rectangle()
+            .fill(Color.paper100)
+            .frame(maxWidth: .infinity)
+            .frame(height: 360)
+            .overlay {
+                if let image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                } else {
                     VStack(spacing: Spacing.s) {
                         Image(systemName: "camera")
                             .font(.system(size: 28))
@@ -29,27 +27,25 @@ struct PhotoPickerButton: View {
                             .foregroundStyle(Color.ink500)
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 360)
-                .cornerRadius(Radius.image)
             }
-        }
-        .overlay {
-            PhotosPicker(selection: $pickerItem, matching: .images) {
-                Color.clear.contentShape(Rectangle())
+            .clipped()
+            .cornerRadius(Radius.image)
+            .overlay {
+                PhotosPicker(selection: $pickerItem, matching: .images) {
+                    Color.clear.contentShape(Rectangle())
+                }
             }
-        }
-        .onChange(of: pickerItem) { _, newItem in
-            guard let newItem else { return }
-            Task {
-                if let data = try? await newItem.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: data) {
-                    await MainActor.run {
-                        image = uiImage
-                        onPick()
+            .onChange(of: pickerItem) { _, newItem in
+                guard let newItem else { return }
+                Task {
+                    if let data = try? await newItem.loadTransferable(type: Data.self),
+                       let uiImage = UIImage(data: data) {
+                        await MainActor.run {
+                            image = uiImage
+                            onPick()
+                        }
                     }
                 }
             }
-        }
     }
 }

@@ -1,0 +1,89 @@
+import SwiftUI
+import SwiftData
+
+struct ArchiveView: View {
+    @State private var viewModel = ArchiveViewModel()
+    @Environment(\.modelContext) private var modelContext
+    @State private var selectedTask: DailyTask?
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: Spacing.xl) {
+                ForEach(viewModel.groupedTasks, id: \.month) { group in
+                    VStack(alignment: .leading, spacing: Spacing.m) {
+                        Text(viewModel.monthLabel(group.month))
+                            .font(.sectionTitle)
+                            .foregroundStyle(Color.ink700)
+                            .padding(.horizontal, Spacing.m)
+
+                        ForEach(group.tasks) { task in
+                            Button {
+                                selectedTask = task
+                            } label: {
+                                TaskArchiveRow(task: task, postCount: viewModel.postCountByTask[task.id] ?? 0)
+                            }
+                            .buttonStyle(.plain)
+                            .padding(.horizontal, Spacing.m)
+                        }
+                    }
+                }
+            }
+            .padding(.vertical, Spacing.m)
+        }
+        .paperBackground()
+        .navigationTitle(NSLocalizedString("archive.nav_title", value: "任务档案馆", comment: ""))
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(item: $selectedTask) { task in
+            TaskDetailView(task: task)
+        }
+        .task {
+            viewModel.load(modelContext: modelContext)
+        }
+    }
+}
+
+private struct TaskArchiveRow: View {
+    let task: DailyTask
+    let postCount: Int
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            HStack(spacing: Spacing.s) {
+                Image(systemName: task.type.iconName)
+                    .font(.caption)
+                    .foregroundStyle(Color.ink500)
+                Text(task.adoptedOn)
+                    .font(.caption)
+                    .foregroundStyle(Color.ink500)
+                Spacer()
+            }
+            Text(task.localizedTitle())
+                .font(.taskTitle)
+                .foregroundStyle(Color.ink900)
+            HStack(spacing: Spacing.s) {
+                Text(task.proposedBy)
+                    .font(.caption)
+                    .foregroundStyle(Color.ink500)
+                Text("·")
+                    .font(.caption)
+                    .foregroundStyle(Color.ink300)
+                Text(String.localizedStringWithFormat(NSLocalizedString("archive.votes", value: "%d 票", comment: ""), task.voteCount))
+                    .font(.caption)
+                    .foregroundStyle(Color.ink500)
+                Text("·")
+                    .font(.caption)
+                    .foregroundStyle(Color.ink300)
+                Text(String.localizedStringWithFormat(NSLocalizedString("archive.post_count", value: "%d 条记录", comment: ""), postCount))
+                    .font(.caption)
+                    .foregroundStyle(Color.ink500)
+            }
+        }
+        .padding(Spacing.m)
+        .background(Color.paper100)
+        .cornerRadius(Radius.card)
+        .overlay(
+            RoundedRectangle(cornerRadius: Radius.card)
+                .stroke(Color.ink300, lineWidth: 0.5)
+        )
+    }
+}

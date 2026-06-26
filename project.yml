@@ -1,53 +1,46 @@
 name: 附近
 options:
+  bundleIdPrefix: com.cassette
   deploymentTarget:
-    iOS: "18.0"
+    iOS: "26.0"
   developmentLanguage: zh-Hans
+  createIntermediateGroups: true
 settings:
   base:
-    SWIFT_VERSION: "5.0"
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
     MARKETING_VERSION: "0.1.0"
     CURRENT_PROJECT_VERSION: "1"
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Automatic
     CODE_SIGNING_REQUIRED: "NO"
     CODE_SIGN_IDENTITY: ""
-    ENABLE_USER_SCRIPT_SANDBOXING: "NO"
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
+    INFOPLIST_KEY_UIRequiresFullScreen: NO
+    INFOPLIST_KEY_CFBundleDisplayName: "附近"
+    INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "我们只需要知道你在哪个街区，以便记录你与附近的故事。位置会模糊到街区级，不会保存精确位置。"
+    INFOPLIST_KEY_NSCameraUsageDescription: "拍照记录你看见的附近。"
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
 targets:
   附近:
     type: application
     platform: iOS
-    deploymentTarget: "18.0"
     bundleId: com.cassette.nearby
     sources:
       - path: 附近
       - path: 附近Resources
         buildPhase: resources
-    info:
-      path: 附近/Info.plist
-      properties:
-        CFBundleDisplayName: 附近
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.cassette.nearby
-        CFBundleShortVersionString: $(MARKETING_VERSION)
-        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
-        UILaunchScreen:
-          UIColorName: Paper50
-        UISupportedInterfaceOrientations:
-          - UIInterfaceOrientationPortrait
-        UISupportedInterfaceOrientations~ipad:
-          - UIInterfaceOrientationPortrait
-          - UIInterfaceOrientationLandscapeLeft
-          - UIInterfaceOrientationLandscapeRight
-        NSLocationWhenInUseUsageDescription: "我们只需要知道你在哪个街区，以便记录你与附近的故事。位置会模糊到街区级，不会保存精确位置。"
-        NSCameraUsageDescription: "拍照记录你看见的附近。"
-        UIApplicationSceneManifest:
-          UIApplicationSupportsMultipleScenes: false
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
   附近Tests:
     type: bundle.unit-test
     platform: iOS
-    deploymentTarget: "18.0"
     bundleId: com.cassette.nearbyTests
     sources:
       - 附近Tests
@@ -56,6 +49,4 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.cassette.nearbyTests
-        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/附近.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/附近"
-        BUNDLE_LOADER: "$(TEST_HOST)"
         GENERATE_INFOPLIST_FILE: "YES"

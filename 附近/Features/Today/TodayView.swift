@@ -26,6 +26,7 @@ struct TodayView: View {
                             .padding(.top, Spacing.s)
                             .padding(.bottom, Spacing.l)
                         }
+                        .buttonStyle(.plain)
                     } else {
                         ProgressView()
                             .frame(maxWidth: .infinity, minHeight: 200)

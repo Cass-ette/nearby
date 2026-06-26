@@ -1,7 +1,7 @@
 import Foundation
 
 enum StreakCalculator {
-    private static var shanghaiCalendar: Calendar = {
+    private static let shanghaiCalendar: Calendar = {
         var c = Calendar(identifier: .gregorian)
         c.timeZone = TimeZone(identifier: "Asia/Shanghai")!
         return c

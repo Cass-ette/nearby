@@ -1,0 +1,28 @@
+{
+  "sourceLanguage" : "zh-Hans",
+  "strings" : {
+    "tab.today" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Today" } } } },
+    "tab.map" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Map" } } } },
+    "tab.feed" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Feed" } } } },
+    "tab.mine" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Mine" } } } },
+    "today.cta.record" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Start Recording" } } } },
+    "today.cta.archive" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Past days" } } } },
+    "record.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Today's Record" } } } },
+    "record.title.placeholder" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Title (optional)…" } } } },
+    "record.text.placeholder" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Write a few words…" } } } },
+    "common.cancel" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } } } },
+    "common.publish" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Publish" } } } },
+    "common.save" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Save" } } } },
+    "map.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Others' Nearby" } } } },
+    "feed.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Nearby" } } } },
+    "feed.filter.all" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "All" } } } },
+    "feed.filter.mine" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Mine" } } } },
+    "mine.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Mine" } } } },
+    "mine.streak" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Day streak" } } } },
+    "archive.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Task Archive" } } } },
+    "onboarding.start" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Start" } } } },
+    "onboarding.next" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Next" } } } },
+    "onboarding.skip" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Skip" } } } }
+  },
+  "version" : "1.0"
+}

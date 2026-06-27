@@ -8,6 +8,8 @@ final class Post {
     var taskRef: String
     var imageData: Data
     var thumbnailData: Data
+    var imageDataList: [Data] = []
+    var thumbnailDataList: [Data] = []
     var title: String?
     var text: String
     var moodTagRaw: String?
@@ -15,6 +17,8 @@ final class Post {
     var fuzzyLabel: String
     var fuzzyLat: Double
     var fuzzyLon: Double
+    var isPublic: Bool = true
+    var showsLocation: Bool = true
     var isOwn: Bool
     var authorId: UUID
     var authorName: String
@@ -25,6 +29,8 @@ final class Post {
         taskRef: String,
         imageData: Data,
         thumbnailData: Data,
+        imageDataList: [Data] = [],
+        thumbnailDataList: [Data] = [],
         title: String? = nil,
         text: String,
         moodTag: MoodTag? = nil,
@@ -32,6 +38,8 @@ final class Post {
         fuzzyLabel: String,
         fuzzyLat: Double,
         fuzzyLon: Double,
+        isPublic: Bool = true,
+        showsLocation: Bool = true,
         isOwn: Bool,
         authorId: UUID,
         authorName: String
@@ -41,6 +49,8 @@ final class Post {
         self.taskRef = taskRef
         self.imageData = imageData
         self.thumbnailData = thumbnailData
+        self.imageDataList = imageDataList.isEmpty ? [imageData] : imageDataList
+        self.thumbnailDataList = thumbnailDataList.isEmpty ? [thumbnailData] : thumbnailDataList
         self.title = title
         self.text = text
         self.moodTagRaw = moodTag?.rawValue
@@ -48,6 +58,8 @@ final class Post {
         self.fuzzyLabel = fuzzyLabel
         self.fuzzyLat = fuzzyLat
         self.fuzzyLon = fuzzyLon
+        self.isPublic = isPublic
+        self.showsLocation = showsLocation
         self.isOwn = isOwn
         self.authorId = authorId
         self.authorName = authorName
@@ -56,5 +68,21 @@ final class Post {
     var moodTag: MoodTag? {
         guard let raw = moodTagRaw else { return nil }
         return MoodTag(rawValue: raw)
+    }
+
+    var publicFuzzyLabel: String? {
+        isPublic && showsLocation ? fuzzyLabel : nil
+    }
+
+    var displayImageDataList: [Data] {
+        imageDataList.isEmpty ? [imageData] : imageDataList
+    }
+
+    var displayThumbnailDataList: [Data] {
+        thumbnailDataList.isEmpty ? [thumbnailData] : thumbnailDataList
+    }
+
+    var photoCount: Int {
+        displayImageDataList.count
     }
 }

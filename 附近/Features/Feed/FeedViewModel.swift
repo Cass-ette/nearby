@@ -23,7 +23,7 @@ final class FeedViewModel {
         var filteredDescriptor = descriptor
         switch filter {
         case .all:
-            filteredDescriptor.predicate = nil
+            filteredDescriptor.predicate = #Predicate<Post> { $0.isPublic == true }
         case .mine:
             let userId = CurrentUser.id
             filteredDescriptor.predicate = #Predicate<Post> { $0.authorId == userId }

@@ -6,39 +6,20 @@ struct MineView: View {
     @State private var viewModel = MineViewModel()
     @State private var editingName = false
     @State private var tempName = ""
+    @State private var displayName = CurrentUser.displayName
     @State private var selectedPost: Post?
-    @State private var selectedResponsePost: Post?
+    @State private var selectedLikedPost: Post?
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: Spacing.l) {
-                    HStack(spacing: Spacing.m) {
-                        Button {
-                            tempName = CurrentUser.displayName
-                            editingName = true
-                        } label: {
-                            HStack(spacing: Spacing.xs) {
-                                Text(CurrentUser.displayName)
-                                    .font(.titleDisplay)
-                                    .foregroundStyle(Color.ink900)
-                                Image(systemName: "pencil")
-                                    .font(.caption)
-                                    .foregroundStyle(Color.ink500)
-                            }
-                        }
-                        .buttonStyle(.plain)
-
-                        Spacer()
-
-                        VStack(alignment: .trailing) {
-                            Text("\(viewModel.streak)")
-                                .font(.system(size: 28, weight: .bold))
-                                .foregroundStyle(Color.cinnabar)
-                            Text(NSLocalizedString("mine.streak", value: "连续记录", comment: ""))
-                                .font(.caption)
-                                .foregroundStyle(Color.ink500)
-                        }
+                    MineHeaderCard(
+                        displayName: displayName,
+                        recordDayCount: viewModel.recordDayCount
+                    ) {
+                        tempName = displayName
+                        editingName = true
                     }
                     .padding(.horizontal, Spacing.m)
 
@@ -54,14 +35,14 @@ struct MineView: View {
                     case .posts:
                         if viewModel.myPosts.isEmpty {
                             EmptyStateView(systemImage: "leaf",
-                                          text: NSLocalizedString("mine.no_posts", value: "你还没有记录过附近。从今日任务开始。", comment: ""))
+                                          text: NSLocalizedString("mine.no_posts", value: "你还没有记录过附近。从今天开始。", comment: ""))
                         } else {
                             LazyVGrid(columns: [GridItem(.flexible(), spacing: Spacing.s), GridItem(.flexible(), spacing: Spacing.s), GridItem(.flexible(), spacing: Spacing.s)], spacing: Spacing.s) {
                                 ForEach(viewModel.myPosts) { post in
                                     Button {
                                         selectedPost = post
                                     } label: {
-                                        if let thumb = UIImage(data: post.thumbnailData) {
+                                        if let thumbData = post.displayThumbnailDataList.first, let thumb = ImageDecodeCache.image(from: thumbData) {
                                             Rectangle()
                                                 .fill(Color.paper100)
                                                 .frame(height: 120)
@@ -71,7 +52,18 @@ struct MineView: View {
                                                         .scaledToFill()
                                                 }
                                                 .clipped()
-                                                .cornerRadius(Radius.image)
+                                                .clipShape(RoundedRectangle(cornerRadius: Radius.image, style: .continuous))
+                                                .overlay(alignment: .topTrailing) {
+                                                    if post.photoCount > 1 {
+                                                        Image(systemName: "rectangle.stack.fill")
+                                                            .font(.caption2)
+                                                            .foregroundStyle(Color.paper50)
+                                                            .padding(5)
+                                                            .background(Color.ink900.opacity(0.5))
+                                                            .clipShape(Circle())
+                                                            .padding(4)
+                                                    }
+                                                }
                                         }
                                     }
                                     .buttonStyle(.plain)
@@ -79,31 +71,17 @@ struct MineView: View {
                             }
                             .padding(.horizontal, Spacing.m)
                         }
-                    case .responses:
-                        if viewModel.myResponses.isEmpty {
-                            EmptyStateView(systemImage: "text.bubble",
-                                          text: NSLocalizedString("mine.no_responses", value: "还没有回应过别人的作品。", comment: ""))
+                    case .likes:
+                        if viewModel.likedPosts.isEmpty {
+                            EmptyStateView(systemImage: "heart",
+                                          text: NSLocalizedString("mine.no_likes", value: "还没有喜欢过别人的记录。", comment: ""))
                         } else {
-                            VStack(spacing: Spacing.m) {
-                                ForEach(viewModel.myResponses) { response in
+                            LazyVStack(spacing: Spacing.m) {
+                                ForEach(viewModel.likedPosts) { post in
                                     Button {
-                                        if let post = responsePost(response) {
-                                            selectedResponsePost = post
-                                        }
+                                        selectedLikedPost = post
                                     } label: {
-                                        VStack(alignment: .leading, spacing: Spacing.xs) {
-                                            Text(response.text)
-                                                .font(.bodySerif)
-                                                .foregroundStyle(Color.ink900)
-                                                .lineLimit(3)
-                                            Text(response.createdAt.formatted(date: .abbreviated, time: .shortened))
-                                                .font(.caption2)
-                                                .foregroundStyle(Color.ink300)
-                                        }
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(Spacing.m)
-                                        .background(Color.paper100)
-                                        .cornerRadius(Radius.button)
+                                        LikedPostRow(post: post)
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -124,7 +102,7 @@ struct MineView: View {
             .navigationDestination(item: $selectedPost) { post in
                 PostDetailView(post: post)
             }
-            .navigationDestination(item: $selectedResponsePost) { post in
+            .navigationDestination(item: $selectedLikedPost) { post in
                 PostDetailView(post: post)
             }
             .alert(NSLocalizedString("mine.edit_name", value: "改个昵称", comment: ""), isPresented: $editingName) {
@@ -134,8 +112,12 @@ struct MineView: View {
                     let trimmed = tempName.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !trimmed.isEmpty {
                         CurrentUser.displayName = trimmed
+                        displayName = trimmed
                     }
                 }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .currentUserDidChange)) { _ in
+                displayName = CurrentUser.displayName
             }
         }
         .paperBackground()
@@ -144,11 +126,118 @@ struct MineView: View {
         }
     }
 
-    private func responsePost(_ response: Response) -> Post? {
-        let postId = response.postId
-        let predicate = #Predicate<Post> { $0.id == postId }
-        let descriptor = FetchDescriptor<Post>(predicate: predicate)
-        return try? modelContext.fetch(descriptor).first
+}
+
+private struct MineHeaderCard: View {
+    let displayName: String
+    let recordDayCount: Int
+    let onEditName: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.l) {
+            HStack(alignment: .center, spacing: Spacing.m) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(displayName)
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.ink900)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+
+                    Button(action: onEditName) {
+                        Label("编辑名称", systemImage: "pencil")
+                            .font(.callout.weight(.medium))
+                            .foregroundStyle(Color.ink500)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 7)
+                            .background(Color.paper50.opacity(0.72))
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(Color.ink300.opacity(0.16), lineWidth: 0.8))
+                    }
+                    .buttonStyle(.plain)
+                }
+
+                Spacer(minLength: Spacing.s)
+
+                RecordDaysPill(count: recordDayCount)
+            }
+        }
+        .padding(Spacing.l)
+        .glassCard(cornerRadius: Radius.hero)
+    }
+}
+
+private struct RecordDaysPill: View {
+    let count: Int
+
+    var body: some View {
+        VStack(spacing: 2) {
+            Text("\(count)")
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .foregroundStyle(Color.cinnabar)
+                .monospacedDigit()
+            Text("记录天数")
+                .font(.caption.weight(.medium))
+                .foregroundStyle(Color.ink500)
+        }
+        .frame(width: 94, height: 86)
+        .background(
+            LinearGradient(
+                colors: [Color.cinnabar.opacity(0.12), Color.paper100.opacity(0.74)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color.white.opacity(0.62), lineWidth: 0.8)
+        )
+    }
+}
+
+private struct LikedPostRow: View {
+    let post: Post
+
+    var body: some View {
+        HStack(spacing: Spacing.m) {
+            if let thumbData = post.displayThumbnailDataList.first, let thumb = ImageDecodeCache.image(from: thumbData) {
+                Rectangle()
+                    .fill(Color.paper100)
+                    .frame(width: 72, height: 72)
+                    .overlay {
+                        Image(uiImage: thumb)
+                            .resizable()
+                            .scaledToFill()
+                    }
+                    .clipped()
+                    .cornerRadius(Radius.image)
+            }
+
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                Text(post.title ?? (post.text.isEmpty ? NSLocalizedString("post.photo_only", value: "一张照片记录", comment: "") : post.text))
+                    .font(.bodySerif)
+                    .foregroundStyle(Color.ink900)
+                    .lineLimit(2)
+                HStack(spacing: Spacing.xs) {
+                    Image(systemName: "heart.fill")
+                        .font(.caption2)
+                        .foregroundStyle(Color.cinnabar)
+                    Text(post.fuzzyLabel)
+                        .font(.caption2)
+                        .foregroundStyle(Color.ink500)
+                    Text("·")
+                        .font(.caption2)
+                        .foregroundStyle(Color.ink300)
+                    Text(post.createdAt.formatted(date: .abbreviated, time: .omitted))
+                        .font(.caption2)
+                        .foregroundStyle(Color.ink500)
+                }
+            }
+
+            Spacer()
+        }
+        .padding(Spacing.m)
+        .nearbyCard(fill: .surfaceElevated, strokeOpacity: 0.14, shadowOpacity: 0.035)
     }
 }
 

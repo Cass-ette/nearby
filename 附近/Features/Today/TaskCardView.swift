@@ -5,27 +5,41 @@ struct TaskCardView: View {
     var hasCompleted: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.m) {
-            HStack(spacing: Spacing.s) {
-                Image(systemName: task.type.iconName)
-                    .font(.caption)
-                    .foregroundStyle(Color.ink500)
-                Text(NSLocalizedString("today.label", value: "今日任务", comment: ""))
-                    .font(.caption)
-                    .foregroundStyle(Color.ink500)
-            }
+        VStack(alignment: .leading, spacing: Spacing.l) {
+            HStack(alignment: .top, spacing: Spacing.m) {
+                VStack(alignment: .leading, spacing: Spacing.s) {
+                    HStack(spacing: Spacing.s) {
+                        Image(systemName: task.type.iconName)
+                            .font(.caption)
+                            .foregroundStyle(Color.cinnabar)
+                        Text(NSLocalizedString("today.label", value: "今日灵感", comment: ""))
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(Color.ink500)
+                    }
 
-            Text(task.localizedTitle())
-                .font(.taskTitle)
-                .foregroundStyle(Color.ink900)
-                .lineSpacing(4)
+                    Text(task.localizedTitle())
+                        .font(.taskTitle)
+                        .foregroundStyle(Color.ink900)
+                        .lineSpacing(4)
+                }
+
+                Spacer(minLength: Spacing.s)
+
+                if hasCompleted {
+                    Label(NSLocalizedString("today.completed", value: "已记录", comment: ""), systemImage: "checkmark")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(Color.cinnabar)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(Color.cinnabar.opacity(0.10))
+                        .clipShape(Capsule())
+                }
+            }
 
             Text(task.localizedPrompt())
                 .font(.bodySerif)
                 .foregroundStyle(Color.ink700)
                 .lineSpacing(5)
-
-            Divider().overlay(Color.ink300)
 
             HStack(spacing: Spacing.s) {
                 Text(task.proposedBy)
@@ -34,7 +48,7 @@ struct TaskCardView: View {
                 Text("·")
                     .font(.caption)
                     .foregroundStyle(Color.ink300)
-                Text(String.localizedStringWithFormat(NSLocalizedString("today.votes", value: "%d 位邻居投票选中", comment: ""), task.voteCount))
+                Text(String.localizedStringWithFormat(NSLocalizedString("today.votes", value: "%d 位邻居也想试试", comment: ""), task.voteCount))
                     .font(.caption)
                     .foregroundStyle(Color.ink500)
                 Spacer()
@@ -60,13 +74,7 @@ struct TaskCardView: View {
         .cornerRadius(Radius.card)
         .overlay(
             RoundedRectangle(cornerRadius: Radius.card)
-                .stroke(Color.ink300, lineWidth: 0.5)
+                .stroke(Color.ink300.opacity(0.6), lineWidth: 0.5)
         )
-        .overlay(alignment: .bottomTrailing) {
-            if hasCompleted {
-                SealStamp()
-                    .padding(Spacing.m)
-            }
-        }
     }
 }

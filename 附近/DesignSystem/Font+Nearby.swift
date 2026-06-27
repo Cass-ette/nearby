@@ -1,12 +1,14 @@
 import SwiftUI
 
 extension Font {
-    // 中文标题：宋体；英文标题：New York
-    static let titleDisplay = Font.custom("SongtiSC-Black", size: 30, relativeTo: .largeTitle)
-    static let taskTitle = Font.custom("SongtiSC-Bold", size: 23, relativeTo: .title2)
-    static let sectionTitle = Font.custom("SongtiSC-Bold", size: 18, relativeTo: .headline)
-    static let bodySerif = Font.custom("SongtiSC-Regular", size: 17, relativeTo: .body)
-    static let caption = Font.system(size: 13, weight: .light)
+    static let titleDisplay = Font.system(.largeTitle, design: .rounded).weight(.bold)
+    static let taskTitle = Font.system(.title2, design: .rounded).weight(.semibold)
+    static let sectionTitle = Font.system(.headline, design: .rounded).weight(.semibold)
+    static let bodySerif = Font.system(.body, design: .default)
+    static let bodyText = Font.system(.body, design: .default).weight(.regular)
+    static let calloutText = Font.system(.callout, design: .default).weight(.regular)
+    static let meta = Font.system(.caption, design: .default).weight(.medium)
+    static let caption = Font.system(.caption, design: .default).weight(.regular)
 }
 
 // Helper to render Songti for Chinese, system serif for English (font fallback handled by iOS)

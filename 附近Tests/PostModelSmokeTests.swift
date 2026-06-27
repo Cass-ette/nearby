@@ -7,8 +7,8 @@ struct PostModelSmokeTests {
     @MainActor
     @Test func canInsertAndFetchPost() throws {
         let container = try ModelContainer(
-            for: Post.self, Response.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            for: Post.self, Response.self, PostLike.self,
+            configurations: ModelConfiguration(UUID().uuidString, isStoredInMemoryOnly: true)
         )
         let context = container.mainContext
 
@@ -38,8 +38,8 @@ struct PostModelSmokeTests {
     @MainActor
     @Test func canInsertResponseLinkedToPost() throws {
         let container = try ModelContainer(
-            for: Post.self, Response.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            for: Post.self, Response.self, PostLike.self,
+            configurations: ModelConfiguration(UUID().uuidString, isStoredInMemoryOnly: true)
         )
         let context = container.mainContext
 
@@ -72,5 +72,24 @@ struct PostModelSmokeTests {
         let responses = try context.fetch(FetchDescriptor<Response>())
         #expect(responses.count == 1)
         #expect(responses.first?.postId == postId)
+    }
+
+    @MainActor
+    @Test func canInsertLikeLinkedToPost() throws {
+        let container = try ModelContainer(
+            for: Post.self, Response.self, PostLike.self,
+            configurations: ModelConfiguration(UUID().uuidString, isStoredInMemoryOnly: true)
+        )
+        let context = container.mainContext
+
+        let postId = UUID()
+        let like = PostLike(postId: postId, userId: CurrentUser.id)
+        context.insert(like)
+        try context.save()
+
+        let likes = try context.fetch(FetchDescriptor<PostLike>())
+        #expect(likes.count == 1)
+        #expect(likes.first?.postId == postId)
+        #expect(likes.first?.uniqueKey == PostLike.makeUniqueKey(postId: postId, userId: CurrentUser.id))
     }
 }

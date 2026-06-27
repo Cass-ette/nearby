@@ -5,7 +5,7 @@ struct OnboardingView: View {
     var onFinish: () -> Void
 
     private let pages: [(image: String, titleZh: String, titleEn: String, bodyZh: String, bodyEn: String)] = [
-        ("sun.max", "每天一个任务", "One task per day", "让你重新看见附近的世界。", "See your nearby world again."),
+        ("sun.max", "每天一点灵感", "A small daily spark", "让你重新看见附近的世界。", "See your nearby world again."),
         ("map", "记录，也看看大家", "Record — and see others", "你可以记录，也可以看看今天大家记录了什么。", "You can record — and see what others recorded today."),
         ("lock.shield", "我们只模糊到街区", "We only fuzz to neighborhood", "不会保存精确位置，街区级是最大的颗粒度。", "We never store precise location. Neighborhood is the grain.")
     ]

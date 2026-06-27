@@ -5,13 +5,15 @@ import CoreLocation
 @MainActor
 @Observable
 final class RecordViewModel {
-    var originalImage: UIImage?
+    var originalImages: [UIImage] = []
     var selectedFilter: ImageFilter = .original
     var title: String = ""
     var text: String = ""
     var selectedMood: MoodTag?
     var fuzzyLocation: FuzzyLocation?
-    var canPublish: Bool { text.trimmingCharacters(in: .whitespacesAndNewlines).count >= 6 && originalImage != nil }
+    var isPublic = true
+    var showsLocation = false
+    var canPublish: Bool { !originalImages.isEmpty }
     var isSaving = false
     var errorMessage: String?
 
@@ -33,14 +35,13 @@ final class RecordViewModel {
     }
 
     func save(modelContext: ModelContext, task: DailyTask) async -> Bool {
-        guard let originalImage else {
+        guard !originalImages.isEmpty else {
             errorMessage = NSLocalizedString("record.error.no_image", value: "请先选一张照片", comment: "")
             return false
         }
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard trimmed.count >= 6 else {
-            errorMessage = NSLocalizedString("record.error.short_text", value: "再多写一句吧", comment: "")
-            return false
+        if fuzzyLocation == nil {
+            await refreshFuzzyLocation()
         }
         guard let fuzzyLocation else {
             errorMessage = NSLocalizedString("record.error.no_location", value: "无法获取位置", comment: "")
@@ -51,15 +52,27 @@ final class RecordViewModel {
         defer { isSaving = false }
 
         do {
-            let resized = try ImageStorage.resize(image: originalImage, maxLongEdge: 2400)
-            let filtered = try ImageFilterEngine.apply(filter: selectedFilter, to: resized)
-            let fullData = try ImageStorage.encodeJPEG(filtered, quality: 0.82)
-            let thumbData = try ImageStorage.makeThumbnail(filtered, longEdge: 400, quality: 0.7)
+            var fullDataList: [Data] = []
+            var thumbDataList: [Data] = []
+
+            for image in originalImages.prefix(12) {
+                let resized = try ImageStorage.resize(image: image, maxLongEdge: 2400)
+                let filtered = try ImageFilterEngine.apply(filter: selectedFilter, to: resized)
+                fullDataList.append(try ImageStorage.encodeJPEG(filtered, quality: 0.82))
+                thumbDataList.append(try ImageStorage.makeThumbnail(filtered, longEdge: 400, quality: 0.7))
+            }
+
+            guard let fullData = fullDataList.first, let thumbData = thumbDataList.first else {
+                errorMessage = NSLocalizedString("record.error.no_image", value: "请先选一张照片", comment: "")
+                return false
+            }
 
             let post = Post(
                 taskRef: task.id,
                 imageData: fullData,
                 thumbnailData: thumbData,
+                imageDataList: fullDataList,
+                thumbnailDataList: thumbDataList,
                 title: title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : title,
                 text: trimmed,
                 moodTag: selectedMood,
@@ -67,6 +80,8 @@ final class RecordViewModel {
                 fuzzyLabel: fuzzyLocation.label,
                 fuzzyLat: fuzzyLocation.lat,
                 fuzzyLon: fuzzyLocation.lon,
+                isPublic: isPublic,
+                showsLocation: isPublic && showsLocation,
                 isOwn: true,
                 authorId: CurrentUser.id,
                 authorName: CurrentUser.displayName

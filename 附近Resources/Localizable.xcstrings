@@ -1,28 +1,1143 @@
 {
   "sourceLanguage" : "zh-Hans",
   "strings" : {
-    "tab.today" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Today" } } } },
-    "tab.map" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Map" } } } },
-    "tab.feed" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Feed" } } } },
-    "tab.mine" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Mine" } } } },
-    "today.cta.record" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Start Recording" } } } },
-    "today.cta.archive" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Past days" } } } },
-    "record.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Today's Record" } } } },
-    "record.title.placeholder" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Title (optional)…" } } } },
-    "record.text.placeholder" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Write a few words…" } } } },
-    "common.cancel" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } } } },
-    "common.publish" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Publish" } } } },
-    "common.save" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Save" } } } },
-    "map.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Others' Nearby" } } } },
-    "feed.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Nearby" } } } },
-    "feed.filter.all" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "All" } } } },
-    "feed.filter.mine" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Mine" } } } },
-    "mine.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Mine" } } } },
-    "mine.streak" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Day streak" } } } },
-    "archive.nav_title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Task Archive" } } } },
-    "onboarding.start" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Start" } } } },
-    "onboarding.next" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Next" } } } },
-    "onboarding.skip" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Skip" } } } }
+    "·" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@ 票" : {
+
+    },
+    "%@/%@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@/%2$@"
+          }
+        }
+      }
+    },
+    "%@/12" : {
+
+    },
+    "+%@" : {
+
+    },
+    "archive.adopted_on" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "采纳于"
+          }
+        }
+      }
+    },
+    "archive.nav_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Spark Archive"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "灵感档案"
+          }
+        }
+      }
+    },
+    "archive.post_count" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%d 条记录"
+          }
+        }
+      }
+    },
+    "archive.proposed_by" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "提议人"
+          }
+        }
+      }
+    },
+    "archive.votes" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%d 票"
+          }
+        }
+      }
+    },
+    "badge.criteria.cityObserver" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "累计发布 100 条附近记录"
+          }
+        }
+      }
+    },
+    "badge.criteria.cityWalker" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "累计发布 10 条附近记录"
+          }
+        }
+      }
+    },
+    "badge.criteria.explorer" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "在 5 个不同的街区留下记录"
+          }
+        }
+      }
+    },
+    "badge.criteria.fiveSenses" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "体验过全部 5 种灵感类型：发现、细节、连接、记忆、共同"
+          }
+        }
+      }
+    },
+    "badge.criteria.hundredDay" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "连续 100 天留下记录"
+          }
+        }
+      }
+    },
+    "badge.criteria.month" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "连续 30 天留下记录"
+          }
+        }
+      }
+    },
+    "badge.criteria.presence" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "累计发布 50 条附近记录"
+          }
+        }
+      }
+    },
+    "badge.criteria.sevenDay" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "连续 7 天留下记录"
+          }
+        }
+      }
+    },
+    "badge.locked" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "未解锁"
+          }
+        }
+      }
+    },
+    "badge.unlocked" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "已解锁"
+          }
+        }
+      }
+    },
+    "common.cancel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cancel"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "取消"
+          }
+        }
+      }
+    },
+    "common.close" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "关闭"
+          }
+        }
+      }
+    },
+    "common.done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "完成"
+          }
+        }
+      }
+    },
+    "common.publish" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Publish"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "发布"
+          }
+        }
+      }
+    },
+    "common.save" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Save"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "保存"
+          }
+        }
+      }
+    },
+    "detail.like" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "喜欢"
+          }
+        }
+      }
+    },
+    "detail.like_accessibility" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "喜欢这条记录"
+          }
+        }
+      }
+    },
+    "detail.liked" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "已喜欢"
+          }
+        }
+      }
+    },
+    "detail.nav_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "记录"
+          }
+        }
+      }
+    },
+    "detail.unlike_accessibility" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "取消喜欢"
+          }
+        }
+      }
+    },
+    "feed.empty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "这里还很安静。成为第一个记录的人。"
+          }
+        }
+      }
+    },
+    "feed.filter.all" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        }
+      }
+    },
+    "feed.filter.mine" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mine"
+          }
+        }
+      }
+    },
+    "feed.nav_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nearby"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "时间流"
+          }
+        }
+      }
+    },
+    "location.unknown" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "附近 · 此刻"
+          }
+        }
+      }
+    },
+    "map.empty_body" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "留下一条记录，这里就会出现第一个属于你的地点。"
+          }
+        }
+      }
+    },
+    "map.empty_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "还没有点亮任何地方"
+          }
+        }
+      }
+    },
+    "map.nav_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Others' Nearby"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "我的附近"
+          }
+        }
+      }
+    },
+    "map.record_count" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "你已经记录了 %d 个地点"
+          }
+        }
+      }
+    },
+    "mine.edit_name" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "改个昵称"
+          }
+        }
+      }
+    },
+    "mine.name_placeholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "昵称"
+          }
+        }
+      }
+    },
+    "mine.nav_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mine"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "我的"
+          }
+        }
+      }
+    },
+    "mine.no_likes" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "还没有喜欢过别人的记录。"
+          }
+        }
+      }
+    },
+    "mine.no_posts" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "你还没有记录过附近。从今天开始。"
+          }
+        }
+      }
+    },
+    "mine.streak" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Day streak"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "连续记录"
+          }
+        }
+      }
+    },
+    "mood.curious" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "好奇"
+          }
+        }
+      }
+    },
+    "mood.melancholy" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "惆怅"
+          }
+        }
+      }
+    },
+    "mood.serene" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "宁静"
+          }
+        }
+      }
+    },
+    "mood.surprise" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "惊喜"
+          }
+        }
+      }
+    },
+    "mood.tender" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "温柔"
+          }
+        }
+      }
+    },
+    "onboarding.next" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Next"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "下一步"
+          }
+        }
+      }
+    },
+    "onboarding.skip" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Skip"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "跳过"
+          }
+        }
+      }
+    },
+    "onboarding.start" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Start"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "开始"
+          }
+        }
+      }
+    },
+    "post.photo_only" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "一张照片记录"
+          }
+        }
+      }
+    },
+    "record.error.no_image" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "请先选一张照片"
+          }
+        }
+      }
+    },
+    "record.error.no_location" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "无法获取位置"
+          }
+        }
+      }
+    },
+    "record.error.save_failed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "保存失败，请重试"
+          }
+        }
+      }
+    },
+    "record.field.mood" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "心情"
+          }
+        }
+      }
+    },
+    "record.header.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "留下这一刻"
+          }
+        }
+      }
+    },
+    "record.location.toggle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "公开街区位置"
+          }
+        }
+      }
+    },
+    "record.nav_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Today's Record"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "写一条记录"
+          }
+        }
+      }
+    },
+    "record.photo.limit" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "最多 12 张"
+          }
+        }
+      }
+    },
+    "record.photo.placeholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "点击选择照片"
+          }
+        }
+      }
+    },
+    "record.public.toggle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "公开这条记录"
+          }
+        }
+      }
+    },
+    "record.section.visibility" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "谁可以看见"
+          }
+        }
+      }
+    },
+    "record.section.words" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "写几句话"
+          }
+        }
+      }
+    },
+    "record.text.placeholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Write a few words…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "正文（可选）"
+          }
+        }
+      }
+    },
+    "record.title.placeholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Title (optional)…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "标题"
+          }
+        }
+      }
+    },
+    "response.placeholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "留下一句回应…"
+          }
+        }
+      }
+    },
+    "seal.today_done" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "今日"
+          }
+        }
+      }
+    },
+    "seal.today_done_2" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "已完成"
+          }
+        }
+      }
+    },
+    "tab.feed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Feed"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "时间流"
+          }
+        }
+      }
+    },
+    "tab.map" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Map"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "地图"
+          }
+        }
+      }
+    },
+    "tab.mine" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mine"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "我的"
+          }
+        }
+      }
+    },
+    "tab.today" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Today"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "今日"
+          }
+        }
+      }
+    },
+    "task_detail.empty" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "还没有相关记录。"
+          }
+        }
+      }
+    },
+    "task_detail.nav_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "灵感"
+          }
+        }
+      }
+    },
+    "task.type.connect" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "连接"
+          }
+        }
+      }
+    },
+    "task.type.detail" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "细节"
+          }
+        }
+      }
+    },
+    "task.type.discover" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "发现"
+          }
+        }
+      }
+    },
+    "task.type.memory" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "记忆"
+          }
+        }
+      }
+    },
+    "task.type.together" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "共同"
+          }
+        }
+      }
+    },
+    "today.completed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "已记录"
+          }
+        }
+      }
+    },
+    "today.cta.archive" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Past days"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "过去的日子"
+          }
+        }
+      }
+    },
+    "today.cta.record" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Start Recording"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "记录一下"
+          }
+        }
+      }
+    },
+    "today.label" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "今日灵感"
+          }
+        }
+      }
+    },
+    "today.stats.today" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "今日留下"
+          }
+        }
+      }
+    },
+    "today.votes" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%d 位邻居也想试试"
+          }
+        }
+      }
+    },
+    "topic.hub.entry" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "共创"
+          }
+        }
+      }
+    },
+    "topic.hub.votes_short" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "3票"
+          }
+        }
+      }
+    },
+    "user.default_name" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "你"
+          }
+        }
+      }
+    },
+    "一起选出明天的灵感" : {
+
+    },
+    "今天" : {
+
+    },
+    "今日共创" : {
+
+    },
+    "创建一个话题" : {
+
+    },
+    "开始记录" : {
+
+    },
+    "投一票" : {
+
+    },
+    "暂时领先" : {
+
+    },
+    "正在投票" : {
+
+    },
+    "比如：收集今天的蓝色" : {
+
+    },
+    "照片、文字，或者只是此刻。" : {
+
+    },
+    "记录天数" : {
+
+    },
+    "附近有什么值得留下？" : {
+
+    }
   },
   "version" : "1.0"
 }

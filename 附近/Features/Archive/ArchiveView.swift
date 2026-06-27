@@ -35,7 +35,7 @@ struct ArchiveView: View {
             .padding(.vertical, Spacing.m)
         }
         .paperBackground()
-        .navigationTitle(NSLocalizedString("archive.nav_title", value: "任务档案馆", comment: ""))
+        .navigationTitle(NSLocalizedString("archive.nav_title", value: "灵感档案", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(item: $selectedTask) { task in
             TaskDetailView(task: task)
@@ -53,7 +53,7 @@ private struct TaskArchiveRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.m) {
-            if let data = thumbnailData, let image = UIImage(data: data) {
+            if let data = thumbnailData, let image = ImageDecodeCache.image(from: data) {
                 Rectangle()
                     .fill(Color.paper100)
                     .frame(width: 88, height: 88)
@@ -103,8 +103,6 @@ private struct TaskArchiveRow: View {
             .frame(maxHeight: .infinity, alignment: .top)
         }
         .padding(Spacing.m)
-        .background(Color.paper100)
-        .cornerRadius(Radius.card)
-        .shadow(color: Color.ink900.opacity(0.05), radius: 10, x: 0, y: 6)
+        .nearbyCard(fill: .surfaceElevated, strokeOpacity: 0.14, shadowOpacity: 0.04)
     }
 }

@@ -7,12 +7,12 @@ struct MiniPreviewCard: View {
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: Spacing.m) {
-                if let thumb = UIImage(data: post.thumbnailData) {
+                if let thumbData = post.displayThumbnailDataList.first, let thumb = ImageDecodeCache.image(from: thumbData) {
                     Image(uiImage: thumb)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 60, height: 60)
-                        .clipShape(RoundedRectangle(cornerRadius: Radius.image))
+                        .frame(width: 68, height: 68)
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.button))
                 }
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     if let title = post.title {
@@ -21,31 +21,37 @@ struct MiniPreviewCard: View {
                             .foregroundStyle(Color.ink900)
                             .lineLimit(1)
                     }
-                    Text(post.text)
-                        .font(.caption)
-                        .foregroundStyle(Color.ink500)
-                        .lineLimit(2)
-                    HStack(spacing: Spacing.xs) {
-                        Text(post.authorName)
+                    if !post.text.isEmpty {
+                        Text(post.text)
                             .font(.caption)
                             .foregroundStyle(Color.ink500)
-                        Text("·")
-                        Text(post.fuzzyLabel)
+                            .lineLimit(2)
+                    }
+                    HStack(spacing: Spacing.xs) {
+                        if let label = post.publicFuzzyLabel {
+                            Text(label)
+                                .font(.caption)
+                                .foregroundStyle(Color.ink500)
+                            Text("·")
+                        }
+                        Text(post.createdAt.formatted(date: .abbreviated, time: .omitted))
                             .font(.caption)
                             .foregroundStyle(Color.ink500)
                     }
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
                     .foregroundStyle(Color.ink300)
             }
             .padding(Spacing.m)
-            .background(Color.paper100)
+            .background(.thinMaterial)
             .cornerRadius(Radius.card)
             .overlay(
                 RoundedRectangle(cornerRadius: Radius.card)
-                    .stroke(Color.ink300, lineWidth: 0.5)
+                    .stroke(Color.paper50.opacity(0.85), lineWidth: 0.8)
             )
+            .shadow(color: Color.ink900.opacity(0.12), radius: 12, y: 4)
         }
         .buttonStyle(.plain)
     }

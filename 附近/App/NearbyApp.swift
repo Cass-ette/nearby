@@ -14,7 +14,7 @@ struct NearbyApp: App {
 
         do {
             container = try ModelContainer(
-                for: Post.self, Response.self,
+                for: Post.self, Response.self, PostLike.self,
                 configurations: ModelConfiguration(isStoredInMemoryOnly: false)
             )
         } catch {
@@ -34,4 +34,3 @@ struct NearbyApp: App {
         .modelContainer(container)
     }
 }
-

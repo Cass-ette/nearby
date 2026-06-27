@@ -33,3 +33,25 @@ enum ImageStorage {
 enum ImageStorageError: Error {
     case encodingFailed
 }
+
+@MainActor
+enum ImageDecodeCache {
+    private static let cache: NSCache<NSString, UIImage> = {
+        let cache = NSCache<NSString, UIImage>()
+        cache.countLimit = 240
+        cache.totalCostLimit = 80 * 1024 * 1024
+        return cache
+    }()
+
+    static func image(from data: Data) -> UIImage? {
+        let key = "\(data.count)-\(data.hashValue)" as NSString
+        if let cached = cache.object(forKey: key) {
+            return cached
+        }
+        guard let image = UIImage(data: data) else {
+            return nil
+        }
+        cache.setObject(image, forKey: key, cost: data.count)
+        return image
+    }
+}

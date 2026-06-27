@@ -5,10 +5,10 @@ import SwiftData
 
 struct MockSeederTests {
     @MainActor
-    @Test func seeds30to50PostsAcrossTenNeighborhoods() async throws {
+    @Test func seeds50to70PostsAcrossTenNeighborhoods() async throws {
         let container = try ModelContainer(
-            for: Post.self, Response.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            for: Post.self, Response.self, PostLike.self,
+            configurations: ModelConfiguration(UUID().uuidString, isStoredInMemoryOnly: true)
         )
         let context = container.mainContext
 
@@ -16,7 +16,7 @@ struct MockSeederTests {
         await MockSeeder.seed(context: context, taskBank: bank)
 
         let posts = try context.fetch(FetchDescriptor<Post>())
-        #expect(posts.count >= 30 && posts.count <= 50, "Expected 30-50 posts, got \(posts.count)")
+        #expect(posts.count >= 50 && posts.count <= 70, "Expected 50-70 posts, got \(posts.count)")
 
         let neighborhoods = Set(posts.map { $0.fuzzyLabel })
         #expect(neighborhoods.count >= 5, "Expected ≥5 distinct labels, got \(neighborhoods.count)")
@@ -25,8 +25,8 @@ struct MockSeederTests {
     @MainActor
     @Test func seedsIdempotent() async throws {
         let container = try ModelContainer(
-            for: Post.self, Response.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            for: Post.self, Response.self, PostLike.self,
+            configurations: ModelConfiguration(UUID().uuidString, isStoredInMemoryOnly: true)
         )
         let context = container.mainContext
         let bank = TaskBank.loadSync()
@@ -43,8 +43,8 @@ struct MockSeederTests {
     @MainActor
     @Test func seedsSomeResponses() async throws {
         let container = try ModelContainer(
-            for: Post.self, Response.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            for: Post.self, Response.self, PostLike.self,
+            configurations: ModelConfiguration(UUID().uuidString, isStoredInMemoryOnly: true)
         )
         let context = container.mainContext
         let bank = TaskBank.loadSync()

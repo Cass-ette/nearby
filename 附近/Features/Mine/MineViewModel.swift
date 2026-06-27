@@ -6,7 +6,7 @@ import SwiftData
 final class MineViewModel {
     enum Tab: String, CaseIterable, Identifiable {
         case posts = "记录"
-        case responses = "回应"
+        case likes = "喜欢"
         case badges = "徽章"
         var id: String { rawValue }
         var localizedName: String {
@@ -16,8 +16,9 @@ final class MineViewModel {
 
     var selectedTab: Tab = .posts
     var myPosts: [Post] = []
-    var myResponses: [Response] = []
+    var likedPosts: [Post] = []
     var streak: Int = 0
+    var recordDayCount: Int = 0
     var badges: [Badge] = []
 
     func load(modelContext: ModelContext) {
@@ -27,11 +28,24 @@ final class MineViewModel {
         postsDescriptor.predicate = #Predicate<Post> { $0.authorId == userId }
         myPosts = (try? modelContext.fetch(postsDescriptor)) ?? []
 
-        var responsesDescriptor = FetchDescriptor<Response>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
-        responsesDescriptor.predicate = #Predicate<Response> { $0.authorId == userId }
-        myResponses = (try? modelContext.fetch(responsesDescriptor)) ?? []
+        var likesDescriptor = FetchDescriptor<PostLike>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
+        likesDescriptor.predicate = #Predicate<PostLike> { $0.userId == userId }
+        let likes = (try? modelContext.fetch(likesDescriptor)) ?? []
+        let likedIds = Set(likes.map(\.postId))
+        let likedAtByPostId = Dictionary(uniqueKeysWithValues: likes.map { ($0.postId, $0.createdAt) })
+        let allPosts = (try? modelContext.fetch(FetchDescriptor<Post>())) ?? []
+        likedPosts = allPosts
+            .filter { likedIds.contains($0.id) }
+            .sorted {
+                (likedAtByPostId[$0.id] ?? .distantPast) > (likedAtByPostId[$1.id] ?? .distantPast)
+            }
 
         streak = StreakCalculator.compute(posts: myPosts)
-        badges = Badge.evaluate(posts: myPosts, streak: streak, responses: myResponses)
+        recordDayCount = Self.computeRecordDayCount(posts: myPosts)
+        badges = Badge.evaluate(posts: myPosts, streak: streak)
+    }
+
+    static func computeRecordDayCount(posts: [Post], calendar: Calendar = .current) -> Int {
+        Set(posts.map { calendar.startOfDay(for: $0.createdAt) }).count
     }
 }

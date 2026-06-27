@@ -44,12 +44,12 @@ struct TaskDetailView: View {
                             .foregroundStyle(Color.ink500)
                     }
                 }
+                .padding(Spacing.l)
+                .nearbyCard(fill: .surfaceElevated, strokeOpacity: 0.14, shadowOpacity: 0.04)
                 .padding(.horizontal, Spacing.m)
 
-                Divider().overlay(Color.ink300).padding(.vertical, Spacing.s)
-
                 if relatedPosts.isEmpty {
-                    Text(NSLocalizedString("task_detail.empty", value: "还没有人记录这个任务。", comment: ""))
+                    Text(NSLocalizedString("task_detail.empty", value: "还没有相关记录。", comment: ""))
                         .font(.bodySerif)
                         .foregroundStyle(Color.ink500)
                         .padding(.horizontal, Spacing.m)
@@ -62,7 +62,7 @@ struct TaskDetailView: View {
                             Button {
                                 selectedPost = post
                             } label: {
-                                if let thumb = UIImage(data: post.thumbnailData) {
+                                if let thumb = ImageDecodeCache.image(from: post.thumbnailData) {
                                     Rectangle()
                                         .fill(Color.paper100)
                                         .frame(height: 140)
@@ -72,7 +72,7 @@ struct TaskDetailView: View {
                                                 .scaledToFill()
                                         }
                                         .clipped()
-                                        .cornerRadius(Radius.image)
+                                        .clipShape(RoundedRectangle(cornerRadius: Radius.image, style: .continuous))
                                 }
                             }
                             .buttonStyle(.plain)
@@ -84,7 +84,7 @@ struct TaskDetailView: View {
             .padding(.vertical, Spacing.m)
         }
         .paperBackground()
-        .navigationTitle(NSLocalizedString("task_detail.nav_title", value: "任务", comment: ""))
+        .navigationTitle(NSLocalizedString("task_detail.nav_title", value: "灵感", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(item: $selectedPost) { post in
             PostDetailView(post: post)

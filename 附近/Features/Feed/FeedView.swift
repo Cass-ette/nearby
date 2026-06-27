@@ -22,7 +22,7 @@ struct FeedView: View {
                     .padding(.top, Spacing.xxl)
                     .padding(.horizontal, Spacing.xl)
                 } else {
-                    LazyVStack(alignment: .leading, spacing: Spacing.l) {
+                    LazyVStack(alignment: .leading, spacing: Spacing.s) {
                         ForEach(viewModel.posts) { post in
                             Button {
                                 selectedPost = post
@@ -35,7 +35,7 @@ struct FeedView: View {
                     .padding(.top, Spacing.m)
                 }
             }
-            .navigationTitle(NSLocalizedString("feed.nav_title", value: "附近", comment: ""))
+            .navigationTitle(NSLocalizedString("feed.nav_title", value: "时间流", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.paper50, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)

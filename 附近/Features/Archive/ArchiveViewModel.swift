@@ -14,7 +14,7 @@ final class ArchiveViewModel {
         let grouped = Dictionary(grouping: posts, by: { $0.taskRef })
         postCountByTask = grouped.mapValues { $0.count }
         latestPostThumbByTask = grouped.compactMapValues { posts in
-            posts.max(by: { $0.createdAt < $1.createdAt })?.thumbnailData
+            posts.max(by: { $0.createdAt < $1.createdAt })?.displayThumbnailDataList.first
         }
 
         let calendar = Calendar(identifier: .gregorian)

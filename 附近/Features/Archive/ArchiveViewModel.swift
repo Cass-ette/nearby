@@ -6,11 +6,16 @@ import SwiftData
 final class ArchiveViewModel {
     var groupedTasks: [(month: String, tasks: [DailyTask])] = []
     var postCountByTask: [String: Int] = [:]
+    var latestPostThumbByTask: [String: Data] = [:]
 
     func load(modelContext: ModelContext) {
         let bank = TaskBank.loadSync()
         let posts = (try? modelContext.fetch(FetchDescriptor<Post>())) ?? []
-        postCountByTask = Dictionary(grouping: posts, by: { $0.taskRef }).mapValues { $0.count }
+        let grouped = Dictionary(grouping: posts, by: { $0.taskRef })
+        postCountByTask = grouped.mapValues { $0.count }
+        latestPostThumbByTask = grouped.compactMapValues { posts in
+            posts.max(by: { $0.createdAt < $1.createdAt })?.thumbnailData
+        }
 
         let calendar = Calendar(identifier: .gregorian)
         var byMonth: [String: [DailyTask]] = [:]

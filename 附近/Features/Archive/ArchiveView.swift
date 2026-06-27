@@ -20,7 +20,11 @@ struct ArchiveView: View {
                             Button {
                                 selectedTask = task
                             } label: {
-                                TaskArchiveRow(task: task, postCount: viewModel.postCountByTask[task.id] ?? 0)
+                                TaskArchiveRow(
+                                    task: task,
+                                    postCount: viewModel.postCountByTask[task.id] ?? 0,
+                                    thumbnailData: viewModel.latestPostThumbByTask[task.id]
+                                )
                             }
                             .buttonStyle(.plain)
                             .padding(.horizontal, Spacing.m)
@@ -45,37 +49,53 @@ struct ArchiveView: View {
 private struct TaskArchiveRow: View {
     let task: DailyTask
     let postCount: Int
+    var thumbnailData: Data?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.xs) {
-            HStack(spacing: Spacing.s) {
-                Image(systemName: task.type.iconName)
-                    .font(.caption)
-                    .foregroundStyle(Color.ink500)
-                Text(task.adoptedOn)
-                    .font(.caption)
-                    .foregroundStyle(Color.ink500)
-                Spacer()
+        HStack(alignment: .top, spacing: Spacing.m) {
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                HStack(spacing: Spacing.s) {
+                    Image(systemName: task.type.iconName)
+                        .font(.caption)
+                        .foregroundStyle(Color.ink500)
+                    Text(task.adoptedOn)
+                        .font(.caption)
+                        .foregroundStyle(Color.ink500)
+                    Spacer()
+                }
+                Text(task.localizedTitle())
+                    .font(.taskTitle)
+                    .foregroundStyle(Color.ink900)
+                HStack(spacing: Spacing.s) {
+                    Text(task.proposedBy)
+                        .font(.caption)
+                        .foregroundStyle(Color.ink500)
+                    Text("·")
+                        .font(.caption)
+                        .foregroundStyle(Color.ink300)
+                    Text(String.localizedStringWithFormat(NSLocalizedString("archive.votes", value: "%d 票", comment: ""), task.voteCount))
+                        .font(.caption)
+                        .foregroundStyle(Color.ink500)
+                    Text("·")
+                        .font(.caption)
+                        .foregroundStyle(Color.ink300)
+                    Text(String.localizedStringWithFormat(NSLocalizedString("archive.post_count", value: "%d 条记录", comment: ""), postCount))
+                        .font(.caption)
+                        .foregroundStyle(Color.ink500)
+                }
             }
-            Text(task.localizedTitle())
-                .font(.taskTitle)
-                .foregroundStyle(Color.ink900)
-            HStack(spacing: Spacing.s) {
-                Text(task.proposedBy)
-                    .font(.caption)
-                    .foregroundStyle(Color.ink500)
-                Text("·")
-                    .font(.caption)
-                    .foregroundStyle(Color.ink300)
-                Text(String.localizedStringWithFormat(NSLocalizedString("archive.votes", value: "%d 票", comment: ""), task.voteCount))
-                    .font(.caption)
-                    .foregroundStyle(Color.ink500)
-                Text("·")
-                    .font(.caption)
-                    .foregroundStyle(Color.ink300)
-                Text(String.localizedStringWithFormat(NSLocalizedString("archive.post_count", value: "%d 条记录", comment: ""), postCount))
-                    .font(.caption)
-                    .foregroundStyle(Color.ink500)
+
+            if let data = thumbnailData, let image = UIImage(data: data) {
+                Rectangle()
+                    .fill(Color.paper100)
+                    .frame(width: 64, height: 64)
+                    .overlay {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                    }
+                    .clipped()
+                    .cornerRadius(Radius.image)
             }
         }
         .padding(Spacing.m)

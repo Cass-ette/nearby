@@ -8,6 +8,7 @@ struct TodayView: View {
     @State private var autoShowRecord: Bool = {
         ProcessInfo.processInfo.arguments.contains("--show-record")
     }()
+    @State private var selectedRecentPost: Post?
 
     var body: some View {
         NavigationStack {
@@ -30,6 +31,10 @@ struct TodayView: View {
                             .padding(.bottom, Spacing.l)
                         }
                         .buttonStyle(.plain)
+
+                        if !viewModel.recentPosts.isEmpty {
+                            RecentPostsSection(posts: viewModel.recentPosts, selectedPost: $selectedRecentPost)
+                        }
                     } else {
                         ProgressView()
                             .frame(maxWidth: .infinity, minHeight: 200)
@@ -46,6 +51,9 @@ struct TodayView: View {
                 if value == "archive" {
                     ArchiveView()
                 }
+            }
+            .navigationDestination(item: $selectedRecentPost) { post in
+                PostDetailView(post: post)
             }
             .safeAreaInset(edge: .bottom) {
                 if viewModel.todayTask != nil {
@@ -86,6 +94,58 @@ struct TodayView: View {
             if !newValue {
                 viewModel.load(modelContext: modelContext, taskBank: taskBank)
             }
+        }
+    }
+}
+
+private struct RecentPostsSection: View {
+    let posts: [Post]
+    @Binding var selectedPost: Post?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.s) {
+            Text(NSLocalizedString("today.recent_posts", value: "最近邻居记录", comment: ""))
+                .font(.sectionTitle)
+                .foregroundStyle(Color.ink700)
+                .padding(.horizontal, Spacing.m)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: Spacing.m) {
+                    ForEach(posts) { post in
+                        Button {
+                            selectedPost = post
+                        } label: {
+                            RecentPostThumb(post: post)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, Spacing.m)
+            }
+        }
+    }
+}
+
+private struct RecentPostThumb: View {
+    let post: Post
+
+    var body: some View {
+        if let image = UIImage(data: post.thumbnailData) {
+            Rectangle()
+                .fill(Color.paper100)
+                .frame(width: 100, height: 130)
+                .overlay {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                }
+                .clipped()
+                .cornerRadius(Radius.image)
+        } else {
+            Rectangle()
+                .fill(Color.paper200)
+                .frame(width: 100, height: 130)
+                .cornerRadius(Radius.image)
         }
     }
 }

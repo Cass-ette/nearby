@@ -7,6 +7,7 @@ final class TodayViewModel {
     var todayTask: DailyTask?
     var hasCompletedToday: Bool = false
     var showRecord: Bool = false
+    var recentPosts: [Post] = []
 
     func load(modelContext: ModelContext, taskBank: [DailyTask]) {
         todayTask = TaskDistributor.task(for: Date(), bank: taskBank)
@@ -18,5 +19,12 @@ final class TodayViewModel {
         let predicate = #Predicate<Post> { $0.taskRef == taskId && $0.isOwn == true && $0.createdAt >= start && $0.createdAt < end }
         let descriptor = FetchDescriptor<Post>(predicate: predicate)
         hasCompletedToday = ((try? modelContext.fetchCount(descriptor)) ?? 0) > 0
+
+        var recentDescriptor = FetchDescriptor<Post>(
+            predicate: #Predicate<Post> { $0.isOwn == false },
+            sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
+        )
+        recentDescriptor.fetchLimit = 10
+        recentPosts = (try? modelContext.fetch(recentDescriptor)) ?? []
     }
 }

@@ -53,42 +53,10 @@ private struct TaskArchiveRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.m) {
-            VStack(alignment: .leading, spacing: Spacing.xs) {
-                HStack(spacing: Spacing.s) {
-                    Image(systemName: task.type.iconName)
-                        .font(.caption)
-                        .foregroundStyle(Color.ink500)
-                    Text(task.adoptedOn)
-                        .font(.caption)
-                        .foregroundStyle(Color.ink500)
-                    Spacer()
-                }
-                Text(task.localizedTitle())
-                    .font(.taskTitle)
-                    .foregroundStyle(Color.ink900)
-                HStack(spacing: Spacing.s) {
-                    Text(task.proposedBy)
-                        .font(.caption)
-                        .foregroundStyle(Color.ink500)
-                    Text("·")
-                        .font(.caption)
-                        .foregroundStyle(Color.ink300)
-                    Text(String.localizedStringWithFormat(NSLocalizedString("archive.votes", value: "%d 票", comment: ""), task.voteCount))
-                        .font(.caption)
-                        .foregroundStyle(Color.ink500)
-                    Text("·")
-                        .font(.caption)
-                        .foregroundStyle(Color.ink300)
-                    Text(String.localizedStringWithFormat(NSLocalizedString("archive.post_count", value: "%d 条记录", comment: ""), postCount))
-                        .font(.caption)
-                        .foregroundStyle(Color.ink500)
-                }
-            }
-
             if let data = thumbnailData, let image = UIImage(data: data) {
                 Rectangle()
                     .fill(Color.paper100)
-                    .frame(width: 64, height: 64)
+                    .frame(width: 88, height: 88)
                     .overlay {
                         Image(uiImage: image)
                             .resizable()
@@ -97,13 +65,46 @@ private struct TaskArchiveRow: View {
                     .clipped()
                     .cornerRadius(Radius.image)
             }
+
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                HStack(spacing: Spacing.s) {
+                    Image(systemName: task.type.iconName)
+                        .font(.caption)
+                        .foregroundStyle(Color.cinnabar)
+                    Text(task.adoptedOn)
+                        .font(.caption)
+                        .foregroundStyle(Color.ink500)
+                    Spacer()
+                }
+
+                Text(task.localizedTitle())
+                    .font(.taskTitle)
+                    .foregroundStyle(Color.ink900)
+                    .lineLimit(2)
+
+                HStack(spacing: Spacing.s) {
+                    Text(task.proposedBy)
+                        .font(.caption2)
+                        .foregroundStyle(Color.ink500)
+                    Text("·")
+                        .font(.caption2)
+                        .foregroundStyle(Color.ink300)
+                    Text(String.localizedStringWithFormat(NSLocalizedString("archive.votes", value: "%d 票", comment: ""), task.voteCount))
+                        .font(.caption2)
+                        .foregroundStyle(Color.ink500)
+                    Text("·")
+                        .font(.caption2)
+                        .foregroundStyle(Color.ink300)
+                    Text(String.localizedStringWithFormat(NSLocalizedString("archive.post_count", value: "%d 条记录", comment: ""), postCount))
+                        .font(.caption2)
+                        .foregroundStyle(Color.ink500)
+                }
+            }
+            .frame(maxHeight: .infinity, alignment: .top)
         }
         .padding(Spacing.m)
         .background(Color.paper100)
         .cornerRadius(Radius.card)
-        .overlay(
-            RoundedRectangle(cornerRadius: Radius.card)
-                .stroke(Color.ink300, lineWidth: 0.5)
-        )
+        .shadow(color: Color.ink900.opacity(0.05), radius: 10, x: 0, y: 6)
     }
 }

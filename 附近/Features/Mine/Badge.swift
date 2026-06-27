@@ -21,7 +21,7 @@ enum Badge: String, CaseIterable, Identifiable {
         case .month: return "moon.stars"
         case .hundredDay: return "tree"
         case .fiveSenses: return "hand.point.up.left"
-        case .cityWalker: return "shoeprints"
+        case .cityWalker: return "figure.walk"
         case .presence: return "mappin"
         case .cityObserver: return "eye"
         }

@@ -32,6 +32,6 @@ final class MineViewModel {
         myResponses = (try? modelContext.fetch(responsesDescriptor)) ?? []
 
         streak = StreakCalculator.compute(posts: myPosts)
-        badges = Badge.evaluate(posts: myPosts, streak: streak)
+        badges = Badge.evaluate(posts: myPosts, streak: streak, responses: myResponses)
     }
 }

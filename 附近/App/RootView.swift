@@ -27,9 +27,15 @@ struct RootView: View {
                             .tabItem { Label(NSLocalizedString("tab.today", value: "今日", comment: ""), systemImage: "calendar") }
                             .tag(0)
 
-                        MapView()
-                            .tabItem { Label(NSLocalizedString("tab.map", value: "地图", comment: ""), systemImage: "map") }
-                            .tag(1)
+                        Group {
+                            if ProcessInfo.processInfo.arguments.contains("--map-classic") {
+                                MapViewClassic()
+                            } else {
+                                MapView()
+                            }
+                        }
+                        .tabItem { Label(NSLocalizedString("tab.map", value: "地图", comment: ""), systemImage: "map") }
+                        .tag(1)
 
                         FeedView()
                             .tabItem { Label(NSLocalizedString("tab.feed", value: "时间流", comment: ""), systemImage: "rectangle.stack") }

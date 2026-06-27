@@ -7,6 +7,7 @@ struct MineView: View {
     @State private var editingName = false
     @State private var tempName = ""
     @State private var selectedPost: Post?
+    @State private var selectedResponsePost: Post?
 
     var body: some View {
         NavigationStack {
@@ -85,19 +86,26 @@ struct MineView: View {
                         } else {
                             VStack(spacing: Spacing.m) {
                                 ForEach(viewModel.myResponses) { response in
-                                    VStack(alignment: .leading, spacing: Spacing.xs) {
-                                        Text(response.text)
-                                            .font(.bodySerif)
-                                            .foregroundStyle(Color.ink900)
-                                            .lineLimit(3)
-                                        Text(response.createdAt.formatted(date: .abbreviated, time: .shortened))
-                                            .font(.caption2)
-                                            .foregroundStyle(Color.ink300)
+                                    Button {
+                                        if let post = responsePost(response) {
+                                            selectedResponsePost = post
+                                        }
+                                    } label: {
+                                        VStack(alignment: .leading, spacing: Spacing.xs) {
+                                            Text(response.text)
+                                                .font(.bodySerif)
+                                                .foregroundStyle(Color.ink900)
+                                                .lineLimit(3)
+                                            Text(response.createdAt.formatted(date: .abbreviated, time: .shortened))
+                                                .font(.caption2)
+                                                .foregroundStyle(Color.ink300)
+                                        }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(Spacing.m)
+                                        .background(Color.paper100)
+                                        .cornerRadius(Radius.button)
                                     }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(Spacing.m)
-                                    .background(Color.paper100)
-                                    .cornerRadius(Radius.button)
+                                    .buttonStyle(.plain)
                                 }
                             }
                             .padding(.horizontal, Spacing.m)
@@ -116,6 +124,9 @@ struct MineView: View {
             .navigationDestination(item: $selectedPost) { post in
                 PostDetailView(post: post)
             }
+            .navigationDestination(item: $selectedResponsePost) { post in
+                PostDetailView(post: post)
+            }
             .alert(NSLocalizedString("mine.edit_name", value: "改个昵称", comment: ""), isPresented: $editingName) {
                 TextField(NSLocalizedString("mine.name_placeholder", value: "昵称", comment: ""), text: $tempName)
                 Button(NSLocalizedString("common.cancel", value: "取消", comment: ""), role: .cancel) {}
@@ -131,6 +142,13 @@ struct MineView: View {
         .task {
             viewModel.load(modelContext: modelContext)
         }
+    }
+
+    private func responsePost(_ response: Response) -> Post? {
+        let postId = response.postId
+        let predicate = #Predicate<Post> { $0.id == postId }
+        let descriptor = FetchDescriptor<Post>(predicate: predicate)
+        return try? modelContext.fetch(descriptor).first
     }
 }
 

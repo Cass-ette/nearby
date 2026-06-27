@@ -27,6 +27,25 @@ enum Badge: String, CaseIterable, Identifiable {
         }
     }
 
+    var criteriaDescription: String {
+        switch self {
+        case .sevenDay:
+            return NSLocalizedString("badge.criteria.sevenDay", value: "连续 7 天完成每日任务并发布记录", comment: "")
+        case .month:
+            return NSLocalizedString("badge.criteria.month", value: "连续 30 天完成每日任务并发布记录", comment: "")
+        case .hundredDay:
+            return NSLocalizedString("badge.criteria.hundredDay", value: "连续 100 天完成每日任务并发布记录", comment: "")
+        case .fiveSenses:
+            return NSLocalizedString("badge.criteria.fiveSenses", value: "体验过全部 5 种类型的任务：发现、细节、连接、记忆、共同", comment: "")
+        case .cityWalker:
+            return NSLocalizedString("badge.criteria.cityWalker", value: "累计发布 10 条附近记录", comment: "")
+        case .presence:
+            return NSLocalizedString("badge.criteria.presence", value: "累计发布 50 条附近记录", comment: "")
+        case .cityObserver:
+            return NSLocalizedString("badge.criteria.cityObserver", value: "累计发布 100 条附近记录", comment: "")
+        }
+    }
+
     static func evaluate(posts: [Post], streak: Int) -> [Badge] {
         let ownPosts = posts.filter { $0.isOwn }
         let ownCount = ownPosts.count

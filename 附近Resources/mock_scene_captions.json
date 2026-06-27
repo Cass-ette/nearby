@@ -1,0 +1,104 @@
+{
+  "captions": [
+    {
+      "sceneId": 1,
+      "title": {"zh": "吧台后面的人", "en": "Behind the counter"},
+      "text": {"zh": "安福路那家小咖啡店，老板擦杯子擦了很久。暖光打在他背上。", "en": "Anfu Rd cafe. The owner wiped glasses for a long time, warm light on his back."}
+    },
+    {
+      "sceneId": 2,
+      "title": {"zh": "黄色墙面的杂货铺", "en": "The yellow-wall grocery"},
+      "text": {"zh": "巨鹿路转角，老杂货铺的木门半开着，门口摆着几只旧木箱。", "en": "Corner of Julu Rd. The old grocery's wooden door half open, vintage crates by the door."}
+    },
+    {
+      "sceneId": 3,
+      "title": {"zh": "弄堂里的花猫", "en": "Cat in the alley"},
+      "text": {"zh": "永康路弄堂拐角，一只花猫蹲在石阶上看我。", "en": "Alley corner on Yongkang Rd. A calico cat watched me from the stone step."}
+    },
+    {
+      "sceneId": 4,
+      "title": {"zh": "法桐树下的自行车", "en": "Bicycle under the plane tree"},
+      "text": {"zh": "武康路的法桐落叶了，盖住了车筐。这辆车停在这里很久了。", "en": "Plane tree leaves fell on Wukang Rd, covering the basket. This bike has been here a long time."}
+    },
+    {
+      "sceneId": 5,
+      "title": {"zh": "弄堂尽头的银杏", "en": "Ginkgo at the alley's end"},
+      "text": {"zh": "愚园路深处，老银杏的金黄铺满了石板路。", "en": "Deep in Yuyuan Rd. The old ginkgo's gold covers the stone path."}
+    },
+    {
+      "sceneId": 6,
+      "title": {"zh": "旧木门", "en": "Old wooden door"},
+      "text": {"zh": "一扇旧木门，门牌上的字迹已经看不太清。每次路过都想拍下来。", "en": "An old wooden door, the sign too faded to read. I want to photograph it every time I pass."}
+    },
+    {
+      "sceneId": 7,
+      "title": {"zh": "雨后的鹅卵石", "en": "Cobblestones after rain"},
+      "text": {"zh": "路上积了一汪水，倒映出整排秋天的树。", "en": "A puddle on the road reflected a whole row of autumn trees."}
+    },
+    {
+      "sceneId": 8,
+      "title": {"zh": "天桥底下", "en": "Under the overpass"},
+      "text": {"zh": "黄昏的光从天桥缝隙里漏下来，照在楼梯上。", "en": "Dusk light leaked through the overpass, falling on the stairs."}
+    },
+    {
+      "sceneId": 9,
+      "title": {"zh": "书店的窗台", "en": "Bookstore windowsill"},
+      "text": {"zh": "窗台上摆着旧书和一盆吊兰。每次经过都希望它一直开着。", "en": "Old books and a spider plant on the windowsill. Every time I pass, I hope it stays open."}
+    },
+    {
+      "sceneId": 10,
+      "title": {"zh": "落叶满地", "en": "Covered in leaves"},
+      "text": {"zh": "今天的风把叶子全吹到了人行道上。踩上去沙沙响。", "en": "Today's wind blew all the leaves onto the sidewalk. They crunched underfoot."}
+    },
+    {
+      "sceneId": 11,
+      "title": {"zh": "书店里", "en": "Inside the bookstore"},
+      "text": {"zh": "昏黄的灯，旧书的味道。我在这里站了十分钟没说话。", "en": "Dim yellow light, the smell of old books. I stood here ten minutes without a word."}
+    },
+    {
+      "sceneId": 12,
+      "title": {"zh": "靠墙的旧车", "en": "Old bike against the wall"},
+      "text": {"zh": "弄堂里一辆老自行车靠在墙上，车筐里也积了落叶。", "en": "An old bike leaning against the wall in the alley, leaves piled in its basket."}
+    },
+    {
+      "sceneId": 13,
+      "title": {"zh": "红灯笼", "en": "Red lantern"},
+      "text": {"zh": "巷子深处挂着一只红灯笼，天黑之后亮了起来。", "en": "A red lantern hung deep in the alley, lit after dark."}
+    },
+    {
+      "sceneId": 14,
+      "title": {"zh": "晒太阳的猫", "en": "Cat in the sun"},
+      "text": {"zh": "午后，猫在石阶上睡成一摊。我没敢走太近。", "en": "Afternoon, the cat melted asleep on the stone step. I didn't dare get closer."}
+    },
+    {
+      "sceneId": 15,
+      "title": {"zh": "卖花草的小店", "en": "The herb shop"},
+      "text": {"zh": "街角的小店，绿色遮阳篷下摆满了盆栽。老板在里头剪枝。", "en": "Corner shop, green awning covered in potted plants. Owner inside, pruning."}
+    },
+    {
+      "sceneId": 16,
+      "title": {"zh": "一碗面", "en": "A bowl of noodles"},
+      "text": {"zh": "巷子深处的小馆，老板端上来一碗热气腾腾的面。", "en": "Small eatery deep in the alley. Owner brought a steaming bowl of noodles."}
+    },
+    {
+      "sceneId": 17,
+      "title": {"zh": "门口的篮子", "en": "Basket at the door"},
+      "text": {"zh": "老小店的门口总摆着一只篮子，装着今天的几样东西。", "en": "The old shop always has a basket at the door, holding today's few things."}
+    },
+    {
+      "sceneId": 18,
+      "title": {"zh": "灯笼亮了", "en": "Lantern lit"},
+      "text": {"zh": "天色暗下来，灯笼从里头透出红光。", "en": "Sky darkened, the lantern glowed red from inside."}
+    },
+    {
+      "sceneId": 19,
+      "title": {"zh": "路上的爷爷", "en": "Grandpa on the road"},
+      "text": {"zh": "前面这位爷爷走得慢，背包带子垂下来一截。我跟着走了两条街。", "en": "The grandpa ahead walked slowly, backpack strap hanging low. I followed for two blocks."}
+    },
+    {
+      "sceneId": 20,
+      "title": {"zh": "红砖老楼", "en": "Old red-brick building"},
+      "text": {"zh": "这片红砖楼有拱形窗户，每次路过都觉得它该被拍下来。", "en": "These red-brick buildings with arched windows. Every time I pass, I think they should be photographed."}
+    }
+  ]
+}

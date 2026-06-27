@@ -6,7 +6,7 @@ import CoreLocation
 enum MockSeeder {
     @MainActor
     static func seedIfNeeded(context: ModelContext, taskBank: [DailyTask]) async {
-        let key = "mockSeeder.version2.completed"
+        let key = "mockSeeder.version3.completed"
         guard !UserDefaults.standard.bool(forKey: key) else { return }
 
         await seed(context: context, taskBank: taskBank)
@@ -24,6 +24,7 @@ enum MockSeeder {
 
         let mockImages = (1...20).compactMap { UIImage(named: "mock_scene_\($0)") }
         let placeholderImage = mockImages.first ?? makeFallbackImage()
+        let sceneCaptions = MockSceneCaptions.load()
 
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "Asia/Shanghai")!
@@ -35,7 +36,6 @@ enum MockSeeder {
             let user = users[i % users.count]
             let neighborhood = neighborhoods[i % neighborhoods.count]
             let template = templates.postTexts[i % templates.postTexts.count]
-            let title = i % 3 == 0 ? templates.postTitles[i % templates.postTitles.count] : nil
             let mood = MoodTag.allCases[i % MoodTag.allCases.count]
             let filter = ImageFilter.allCases[i % ImageFilter.allCases.count]
 
@@ -51,7 +51,10 @@ enum MockSeeder {
             )
             let labelZh = "\(neighborhood.nameZh) · \(neighborhood.districtZh)"
 
-            let baseImage = mockImages.isEmpty ? placeholderImage : mockImages[i % max(mockImages.count, 1)]
+            let imageIndex = i % max(mockImages.count, 1)
+            let sceneId = imageIndex + 1
+            let caption = sceneCaptions[sceneId]
+            let baseImage = mockImages.isEmpty ? placeholderImage : mockImages[imageIndex]
             let resized = (try? ImageStorage.resize(image: baseImage, maxLongEdge: 2400)) ?? baseImage
             let filtered = (try? ImageFilterEngine.apply(filter: filter, to: resized)) ?? resized
             let fullData = (try? ImageStorage.encodeJPEG(filtered, quality: 0.82)) ?? Data()
@@ -64,8 +67,8 @@ enum MockSeeder {
                 taskRef: task.id,
                 imageData: fullData,
                 thumbnailData: thumbData,
-                title: title?.localized(),
-                text: template.localized(),
+                title: caption?.title.localized(),
+                text: caption?.text.localized() ?? template.localized(),
                 moodTag: mood,
                 filterName: filter.rawValue,
                 fuzzyLabel: labelZh,
@@ -124,7 +127,6 @@ enum MockSeeder {
             let task = taskBank[i % taskBank.count]
             let neighborhood = neighborhoods[i % neighborhoods.count]
             let template = templates.postTexts[i % templates.postTexts.count]
-            let title = i % 2 == 0 ? templates.postTitles[i % templates.postTitles.count] : nil
             let mood = MoodTag.allCases[i % MoodTag.allCases.count]
             let filter = ImageFilter.allCases[i % ImageFilter.allCases.count]
 
@@ -140,7 +142,10 @@ enum MockSeeder {
             )
             let labelZh = "\(neighborhood.nameZh) · \(neighborhood.districtZh)"
 
-            let baseImage = mockImages[i % max(mockImages.count, 1)]
+            let imageIndex = i % max(mockImages.count, 1)
+            let sceneId = imageIndex + 1
+            let caption = sceneCaptions[sceneId]
+            let baseImage = mockImages.isEmpty ? placeholderImage : mockImages[imageIndex]
             let resized = (try? ImageStorage.resize(image: baseImage, maxLongEdge: 2400)) ?? baseImage
             let filtered = (try? ImageFilterEngine.apply(filter: filter, to: resized)) ?? resized
             let fullData = (try? ImageStorage.encodeJPEG(filtered, quality: 0.82)) ?? Data()
@@ -151,8 +156,8 @@ enum MockSeeder {
                 taskRef: task.id,
                 imageData: fullData,
                 thumbnailData: thumbData,
-                title: title?.localized(),
-                text: template.localized(),
+                title: caption?.title.localized(),
+                text: caption?.text.localized() ?? template.localized(),
                 moodTag: mood,
                 filterName: filter.rawValue,
                 fuzzyLabel: labelZh,

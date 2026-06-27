@@ -6,7 +6,7 @@ import CoreLocation
 enum MockSeeder {
     @MainActor
     static func seedIfNeeded(context: ModelContext, taskBank: [DailyTask]) async {
-        let key = "mockSeeder.version1.completed"
+        let key = "mockSeeder.version2.completed"
         guard !UserDefaults.standard.bool(forKey: key) else { return }
 
         await seed(context: context, taskBank: taskBank)
@@ -118,6 +118,54 @@ enum MockSeeder {
             }
         }
 
+        // Demo user posts: populate Mine tab and unlock badges naturally.
+        let ownPostCount = 12
+        for i in 0..<ownPostCount {
+            let task = taskBank[i % taskBank.count]
+            let neighborhood = neighborhoods[i % neighborhoods.count]
+            let template = templates.postTexts[i % templates.postTexts.count]
+            let title = i % 2 == 0 ? templates.postTitles[i % templates.postTitles.count] : nil
+            let mood = MoodTag.allCases[i % MoodTag.allCases.count]
+            let filter = ImageFilter.allCases[i % ImageFilter.allCases.count]
+
+            let daysAgo = i % 8
+            let hour = 9 + (i % 6)
+            let date = calendar.date(byAdding: .day, value: -daysAgo, to: now)!
+                .addingTimeInterval(TimeInterval((hour - 12) * 3600))
+
+            let jitter = Double(i % 5) * 0.0003
+            let coord = CLLocationCoordinate2DMake(
+                neighborhood.centerLat + jitter,
+                neighborhood.centerLon + jitter
+            )
+            let labelZh = "\(neighborhood.nameZh) · \(neighborhood.districtZh)"
+
+            let baseImage = mockImages[i % max(mockImages.count, 1)]
+            let resized = (try? ImageStorage.resize(image: baseImage, maxLongEdge: 2400)) ?? baseImage
+            let filtered = (try? ImageFilterEngine.apply(filter: filter, to: resized)) ?? resized
+            let fullData = (try? ImageStorage.encodeJPEG(filtered, quality: 0.82)) ?? Data()
+            let thumbData = (try? ImageStorage.makeThumbnail(filtered, longEdge: 400, quality: 0.7)) ?? Data()
+
+            let post = Post(
+                createdAt: date,
+                taskRef: task.id,
+                imageData: fullData,
+                thumbnailData: thumbData,
+                title: title?.localized(),
+                text: template.localized(),
+                moodTag: mood,
+                filterName: filter.rawValue,
+                fuzzyLabel: labelZh,
+                fuzzyLat: coord.latitude,
+                fuzzyLon: coord.longitude,
+                isOwn: true,
+                authorId: CurrentUser.id,
+                authorName: CurrentUser.displayName
+            )
+            context.insert(post)
+            insertedPosts.append(post)
+        }
+
         let responseTemplates = templates.responses
         for post in insertedPosts {
             let responseCount = Int.random(in: 0...3)
@@ -135,6 +183,21 @@ enum MockSeeder {
                 )
                 context.insert(response)
             }
+        }
+
+        // Demo user responses: populate Mine responses tab.
+        let ownResponseCount = 5
+        let ownResponsePosts = insertedPosts.shuffled().prefix(ownResponseCount)
+        for (i, post) in ownResponsePosts.enumerated() {
+            let template = responseTemplates[i % responseTemplates.count]
+            let response = Response(
+                postId: post.id,
+                text: template.localized(),
+                isOwn: true,
+                authorId: CurrentUser.id,
+                authorName: CurrentUser.displayName
+            )
+            context.insert(response)
         }
 
         try? context.save()

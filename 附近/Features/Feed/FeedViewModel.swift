@@ -5,15 +5,20 @@ import SwiftData
 @Observable
 final class FeedViewModel {
     enum Filter: String, CaseIterable, Identifiable {
-        case all = "全部"
+        case nearby = "nearby"
         case mine = "我的"
         var id: String { rawValue }
         var localizedName: String {
-            NSLocalizedString("feed.filter.\(rawValue)", value: rawValue, comment: "")
+            switch self {
+            case .nearby:
+                NSLocalizedString("feed.filter.nearby", value: "附近", comment: "")
+            case .mine:
+                NSLocalizedString("feed.filter.mine", value: "我的", comment: "")
+            }
         }
     }
 
-    var filter: Filter = .all
+    var filter: Filter = .nearby
     var posts: [Post] = []
 
     func load(modelContext: ModelContext) {
@@ -21,9 +26,11 @@ final class FeedViewModel {
             sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
         )
         var filteredDescriptor = descriptor
+        filteredDescriptor.fetchLimit = 12
         switch filter {
-        case .all:
-            filteredDescriptor.predicate = #Predicate<Post> { $0.isPublic == true }
+        case .nearby:
+            let userId = CurrentUser.id
+            filteredDescriptor.predicate = #Predicate<Post> { $0.isPublic == true || $0.authorId == userId }
         case .mine:
             let userId = CurrentUser.id
             filteredDescriptor.predicate = #Predicate<Post> { $0.authorId == userId }

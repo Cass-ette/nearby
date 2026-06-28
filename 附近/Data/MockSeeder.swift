@@ -6,11 +6,39 @@ import CoreLocation
 enum MockSeeder {
     @MainActor
     static func seedIfNeeded(context: ModelContext, taskBank: [DailyTask]) async {
-        let key = "mockSeeder.version3.completed"
+        let key = "mockSeeder.version4.completed"
         guard !UserDefaults.standard.bool(forKey: key) else { return }
 
+        resetPublicDemoData(context: context)
         await seed(context: context, taskBank: taskBank)
         UserDefaults.standard.set(true, forKey: key)
+    }
+
+    @MainActor
+    private static func resetPublicDemoData(context: ModelContext) {
+        let postDescriptor = FetchDescriptor<Post>(
+            predicate: #Predicate<Post> { $0.isOwn == false }
+        )
+        let posts = (try? context.fetch(postDescriptor)) ?? []
+        let postIds = Set(posts.map(\.id))
+
+        let likeDescriptor = FetchDescriptor<PostLike>()
+        let likes = (try? context.fetch(likeDescriptor)) ?? []
+        for like in likes where postIds.contains(like.postId) {
+            context.delete(like)
+        }
+
+        let responseDescriptor = FetchDescriptor<Response>()
+        let responses = (try? context.fetch(responseDescriptor)) ?? []
+        for response in responses where postIds.contains(response.postId) {
+            context.delete(response)
+        }
+
+        for post in posts {
+            context.delete(post)
+        }
+
+        try? context.save()
     }
 
     @MainActor

@@ -119,30 +119,36 @@ private struct DetailPhotoPager: View {
     let post: Post
     @Binding var selectedIndex: Int
 
-    private var images: [UIImage] {
-        post.displayImageDataList.compactMap { ImageDecodeCache.image(from: $0) }
+    private var imageDataList: [Data] {
+        post.displayImageDataList
     }
 
     var body: some View {
-        if !images.isEmpty {
+        if !imageDataList.isEmpty {
             TabView(selection: $selectedIndex) {
-                ForEach(Array(images.enumerated()), id: \.offset) { index, image in
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 430)
-                        .clipped()
-                        .tag(index)
+                ForEach(Array(imageDataList.enumerated()), id: \.offset) { index, imageData in
+                    AsyncDecodedImage(data: imageData) { image in
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 430)
+                            .clipped()
+                    } placeholder: {
+                        Color.paper100
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 430)
+                    }
+                    .tag(index)
                 }
             }
-            .tabViewStyle(.page(indexDisplayMode: images.count > 1 ? .automatic : .never))
+            .tabViewStyle(.page(indexDisplayMode: imageDataList.count > 1 ? .automatic : .never))
             .frame(height: 430)
             .clipShape(RoundedRectangle(cornerRadius: Radius.hero, style: .continuous))
             .padding(.horizontal, Spacing.m)
             .overlay(alignment: .topTrailing) {
-                if images.count > 1 {
-                    Text("\(selectedIndex + 1)/\(images.count)")
+                if imageDataList.count > 1 {
+                    Text("\(selectedIndex + 1)/\(imageDataList.count)")
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(Color.paper50)
                         .padding(.horizontal, 10)

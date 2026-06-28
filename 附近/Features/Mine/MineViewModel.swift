@@ -45,6 +45,21 @@ final class MineViewModel {
         badges = Badge.evaluate(posts: myPosts, streak: streak)
     }
 
+    func delete(post: Post, modelContext: ModelContext) {
+        let postId = post.id
+        let likeDescriptor = FetchDescriptor<PostLike>(
+            predicate: #Predicate<PostLike> { $0.postId == postId }
+        )
+        let likes = (try? modelContext.fetch(likeDescriptor)) ?? []
+        for like in likes {
+            modelContext.delete(like)
+        }
+
+        modelContext.delete(post)
+        try? modelContext.save()
+        load(modelContext: modelContext)
+    }
+
     static func computeRecordDayCount(posts: [Post], calendar: Calendar = .current) -> Int {
         Set(posts.map { calendar.startOfDay(for: $0.createdAt) }).count
     }

@@ -53,18 +53,16 @@ private struct TaskArchiveRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.m) {
-            if let data = thumbnailData, let image = ImageDecodeCache.image(from: data) {
-                Rectangle()
-                    .fill(Color.paper100)
-                    .frame(width: 88, height: 88)
-                    .overlay {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFill()
-                    }
-                    .clipped()
-                    .cornerRadius(Radius.image)
+            AsyncDecodedImage(data: thumbnailData) { image in
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                Color.paper100
             }
+            .frame(width: 88, height: 88)
+            .clipped()
+            .cornerRadius(Radius.image)
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 HStack(spacing: Spacing.s) {

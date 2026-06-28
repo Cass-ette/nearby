@@ -61,6 +61,6 @@ enum AnnotationClusterer {
     }
 
     private static func displayMode(for gridSize: Double) -> AnnotationCluster.DisplayMode {
-        gridSize <= 0.00035 ? .photo : .pin
+        .pin
     }
 }

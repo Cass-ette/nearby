@@ -131,11 +131,15 @@ struct RecordView: View {
                     viewModel.showsLocation = false
                 }
             }
+            .onChange(of: viewModel.showsLocation) { _, showsLocation in
+                if showsLocation {
+                    Task {
+                        await viewModel.prepareLocationForSharing()
+                    }
+                }
+            }
         }
         .paperBackground()
-        .task {
-            await viewModel.setupLocation()
-        }
     }
 }
 

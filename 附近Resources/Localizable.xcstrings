@@ -358,12 +358,34 @@
       }
     },
     "feed.filter.mine" : {
-      "extractionState" : "stale",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mine"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "我的"
+          }
+        }
+      }
+    },
+    "feed.filter.nearby" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mine"
+            "value" : "Nearby"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "附近"
           }
         }
       }
@@ -1112,6 +1134,9 @@
 
     },
     "创建一个话题" : {
+
+    },
+    "删除后，这条记录会从时间流、地图和我的页面中移除。" : {
 
     },
     "开始记录" : {

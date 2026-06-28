@@ -19,7 +19,7 @@ final class RecordViewModel {
 
     let locationManager = LocationManager()
 
-    func setupLocation() async {
+    func prepareLocationForSharing() async {
         if locationManager.currentCoord == nil {
             locationManager.requestPermission()
             locationManager.requestLocation()
@@ -40,7 +40,9 @@ final class RecordViewModel {
             return false
         }
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        if fuzzyLocation == nil {
+        if isPublic && showsLocation && fuzzyLocation == nil {
+            await prepareLocationForSharing()
+        } else if fuzzyLocation == nil {
             await refreshFuzzyLocation()
         }
         guard let fuzzyLocation else {

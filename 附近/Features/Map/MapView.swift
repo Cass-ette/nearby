@@ -12,7 +12,6 @@ struct MapView: View {
         NavigationStack {
             ZStack(alignment: .bottom) {
                 Map(position: $viewModel.cameraPosition) {
-                    UserAnnotation()
                     ForEach(viewModel.clusters) { cluster in
                         Annotation("", coordinate: CLLocationCoordinate2D(latitude: cluster.anchorLat, longitude: cluster.anchorLon)) {
                             PhotoAnnotation(cluster: cluster) { post in
@@ -25,7 +24,6 @@ struct MapView: View {
                 }
                 .mapStyle(.standard(elevation: .flat))
                 .mapControls {
-                    MapUserLocationButton()
                     MapCompass()
                 }
                 .onMapCameraChange(frequency: .onEnd) { context in

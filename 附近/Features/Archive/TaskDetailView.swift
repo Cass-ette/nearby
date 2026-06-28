@@ -62,18 +62,16 @@ struct TaskDetailView: View {
                             Button {
                                 selectedPost = post
                             } label: {
-                                if let thumb = ImageDecodeCache.image(from: post.thumbnailData) {
-                                    Rectangle()
-                                        .fill(Color.paper100)
-                                        .frame(height: 140)
-                                        .overlay {
-                                            Image(uiImage: thumb)
-                                                .resizable()
-                                                .scaledToFill()
-                                        }
-                                        .clipped()
-                                        .clipShape(RoundedRectangle(cornerRadius: Radius.image, style: .continuous))
+                                AsyncDecodedImage(data: post.thumbnailData) { image in
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFill()
+                                } placeholder: {
+                                    Color.paper100
                                 }
+                                .frame(height: 140)
+                                .clipped()
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.image, style: .continuous))
                             }
                             .buttonStyle(.plain)
                         }

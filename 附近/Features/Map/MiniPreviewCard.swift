@@ -7,13 +7,15 @@ struct MiniPreviewCard: View {
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: Spacing.m) {
-                if let thumbData = post.displayThumbnailDataList.first, let thumb = ImageDecodeCache.image(from: thumbData) {
-                    Image(uiImage: thumb)
+                AsyncDecodedImage(data: post.displayThumbnailDataList.first) { image in
+                    Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 68, height: 68)
-                        .clipShape(RoundedRectangle(cornerRadius: Radius.button))
+                } placeholder: {
+                    Color.paper100
                 }
+                .frame(width: 68, height: 68)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.button))
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     if let title = post.title {
                         Text(title)

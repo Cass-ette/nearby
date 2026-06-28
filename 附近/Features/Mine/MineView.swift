@@ -9,6 +9,7 @@ struct MineView: View {
     @State private var displayName = CurrentUser.displayName
     @State private var selectedPost: Post?
     @State private var selectedLikedPost: Post?
+    @State private var postPendingDeletion: Post?
 
     var body: some View {
         NavigationStack {
@@ -37,39 +38,15 @@ struct MineView: View {
                             EmptyStateView(systemImage: "leaf",
                                           text: NSLocalizedString("mine.no_posts", value: "你还没有记录过附近。从今天开始。", comment: ""))
                         } else {
-                            LazyVGrid(columns: [GridItem(.flexible(), spacing: Spacing.s), GridItem(.flexible(), spacing: Spacing.s), GridItem(.flexible(), spacing: Spacing.s)], spacing: Spacing.s) {
-                                ForEach(viewModel.myPosts) { post in
-                                    Button {
-                                        selectedPost = post
-                                    } label: {
-                                        if let thumbData = post.displayThumbnailDataList.first, let thumb = ImageDecodeCache.image(from: thumbData) {
-                                            Rectangle()
-                                                .fill(Color.paper100)
-                                                .frame(height: 120)
-                                                .overlay {
-                                                    Image(uiImage: thumb)
-                                                        .resizable()
-                                                        .scaledToFill()
-                                                }
-                                                .clipped()
-                                                .clipShape(RoundedRectangle(cornerRadius: Radius.image, style: .continuous))
-                                                .overlay(alignment: .topTrailing) {
-                                                    if post.photoCount > 1 {
-                                                        Image(systemName: "rectangle.stack.fill")
-                                                            .font(.caption2)
-                                                            .foregroundStyle(Color.paper50)
-                                                            .padding(5)
-                                                            .background(Color.ink900.opacity(0.5))
-                                                            .clipShape(Circle())
-                                                            .padding(4)
-                                                    }
-                                                }
-                                        }
-                                    }
-                                    .buttonStyle(.plain)
+                            MinePhotoGrid(
+                                posts: viewModel.myPosts,
+                                onSelect: { post in
+                                selectedPost = post
+                                },
+                                onDelete: { post in
+                                    postPendingDeletion = post
                                 }
-                            }
-                            .padding(.horizontal, Spacing.m)
+                            )
                         }
                     case .likes:
                         if viewModel.likedPosts.isEmpty {
@@ -93,6 +70,7 @@ struct MineView: View {
                     }
                 }
                 .padding(.vertical, Spacing.m)
+                .frame(maxWidth: .infinity)
             }
             .navigationTitle(NSLocalizedString("mine.nav_title", value: "我的", comment: ""))
             .navigationBarTitleDisplayMode(.inline)
@@ -104,6 +82,19 @@ struct MineView: View {
             }
             .navigationDestination(item: $selectedLikedPost) { post in
                 PostDetailView(post: post)
+            }
+            .alert("删除这条记录？", isPresented: deleteConfirmationBinding) {
+                Button("取消", role: .cancel) {
+                    postPendingDeletion = nil
+                }
+                Button("删除", role: .destructive) {
+                    if let postPendingDeletion {
+                        viewModel.delete(post: postPendingDeletion, modelContext: modelContext)
+                    }
+                    postPendingDeletion = nil
+                }
+            } message: {
+                Text("删除后，这条记录会从时间流、地图和我的页面中移除。")
             }
             .alert(NSLocalizedString("mine.edit_name", value: "改个昵称", comment: ""), isPresented: $editingName) {
                 TextField(NSLocalizedString("mine.name_placeholder", value: "昵称", comment: ""), text: $tempName)
@@ -126,6 +117,98 @@ struct MineView: View {
         }
     }
 
+    private var deleteConfirmationBinding: Binding<Bool> {
+        Binding(
+            get: { postPendingDeletion != nil },
+            set: { isPresented in
+                if !isPresented {
+                    postPendingDeletion = nil
+                }
+            }
+        )
+    }
+
+}
+
+private struct MinePhotoGrid: View {
+    let posts: [Post]
+    let onSelect: (Post) -> Void
+    let onDelete: (Post) -> Void
+
+    private let columns = 3
+
+    var body: some View {
+        GeometryReader { proxy in
+            let horizontalPadding = Spacing.m
+            let gap = Spacing.s
+            let availableWidth = max(0, proxy.size.width - horizontalPadding * 2)
+            let itemSide = floor((availableWidth - gap * CGFloat(columns - 1)) / CGFloat(columns))
+            let gridColumns = Array(
+                repeating: GridItem(.fixed(itemSide), spacing: gap),
+                count: columns
+            )
+
+            LazyVGrid(columns: gridColumns, spacing: gap) {
+                ForEach(posts) { post in
+                    Button {
+                        onSelect(post)
+                    } label: {
+                        MinePhotoTile(post: post, side: itemSide)
+                    }
+                    .buttonStyle(.plain)
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            onDelete(post)
+                        } label: {
+                            Label("删除记录", systemImage: "trash")
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, horizontalPadding)
+            .frame(width: proxy.size.width, alignment: .center)
+        }
+        .frame(height: gridHeight(for: posts.count, containerWidth: UIScreen.main.bounds.width))
+    }
+
+    private func gridHeight(for count: Int, containerWidth: CGFloat) -> CGFloat {
+        guard count > 0 else { return 0 }
+        let horizontalPadding = Spacing.m
+        let gap = Spacing.s
+        let availableWidth = max(0, containerWidth - horizontalPadding * 2)
+        let itemSide = floor((availableWidth - gap * CGFloat(columns - 1)) / CGFloat(columns))
+        let rowCount = Int(ceil(Double(count) / Double(columns)))
+        return itemSide * CGFloat(rowCount) + gap * CGFloat(max(0, rowCount - 1))
+    }
+}
+
+private struct MinePhotoTile: View {
+    let post: Post
+    let side: CGFloat
+
+    var body: some View {
+        AsyncDecodedImage(data: post.displayThumbnailDataList.first) { image in
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+        } placeholder: {
+            Color.paper100
+        }
+        .frame(width: side, height: side)
+        .clipped()
+        .clipShape(RoundedRectangle(cornerRadius: Radius.image, style: .continuous))
+        .overlay(alignment: .topTrailing) {
+            if post.photoCount > 1 {
+                Image(systemName: "rectangle.stack.fill")
+                    .font(.caption2)
+                    .foregroundStyle(Color.paper50)
+                    .padding(5)
+                    .background(Color.ink900.opacity(0.5))
+                    .clipShape(Circle())
+                    .padding(4)
+            }
+        }
+    }
 }
 
 private struct MineHeaderCard: View {
@@ -200,18 +283,16 @@ private struct LikedPostRow: View {
 
     var body: some View {
         HStack(spacing: Spacing.m) {
-            if let thumbData = post.displayThumbnailDataList.first, let thumb = ImageDecodeCache.image(from: thumbData) {
-                Rectangle()
-                    .fill(Color.paper100)
-                    .frame(width: 72, height: 72)
-                    .overlay {
-                        Image(uiImage: thumb)
-                            .resizable()
-                            .scaledToFill()
-                    }
-                    .clipped()
-                    .cornerRadius(Radius.image)
+            AsyncDecodedImage(data: post.displayThumbnailDataList.first) { image in
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                Color.paper100
             }
+            .frame(width: 72, height: 72)
+            .clipped()
+            .cornerRadius(Radius.image)
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 Text(post.title ?? (post.text.isEmpty ? NSLocalizedString("post.photo_only", value: "一张照片记录", comment: "") : post.text))

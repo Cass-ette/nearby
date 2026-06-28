@@ -30,8 +30,10 @@ struct FeedView: View {
                                 PostCardView(post: post)
                             }
                             .buttonStyle(.plain)
+                            .frame(maxWidth: .infinity)
                         }
                     }
+                    .frame(maxWidth: .infinity)
                     .padding(.top, Spacing.m)
                 }
             }

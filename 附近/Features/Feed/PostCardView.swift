@@ -43,6 +43,7 @@ struct PostCardView: View {
             }
         }
         .padding(Spacing.m)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .nearbyCard(fill: .surfaceElevated, strokeOpacity: 0.14, shadowOpacity: 0.045)
         .padding(.horizontal, Spacing.m)
         .padding(.bottom, Spacing.s)
@@ -52,41 +53,60 @@ struct PostCardView: View {
 private struct PostPhotoGroup: View {
     let post: Post
 
-    private var images: [UIImage] {
-        post.displayThumbnailDataList.compactMap { ImageDecodeCache.image(from: $0) }
+    private var imageDataList: [Data] {
+        Array(post.displayImageDataList.prefix(3))
     }
 
     var body: some View {
-        if let first = images.first {
-            if images.count == 1 {
-                Image(uiImage: first)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 320)
-                    .clipped()
+        if let firstData = imageDataList.first {
+            GeometryReader { proxy in
+                if imageDataList.count == 1 {
+                    AsyncDecodedImage(data: firstData) { image in
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: proxy.size.width, height: 320)
+                            .clipped()
+                    } placeholder: {
+                        Rectangle()
+                            .fill(Color.paper100)
+                            .frame(width: proxy.size.width, height: 320)
+                    }
                     .clipShape(RoundedRectangle(cornerRadius: Radius.image, style: .continuous))
-            } else {
-                PhotoDeck(images: images)
+                } else {
+                    PhotoDeck(imageDataList: imageDataList, photoCount: post.photoCount, availableWidth: proxy.size.width)
+                }
             }
+            .frame(height: imageDataList.count == 1 ? 320 : 348)
         }
     }
 }
 
 private struct PhotoDeck: View {
-    let images: [UIImage]
+    let imageDataList: [Data]
+    let photoCount: Int
+    let availableWidth: CGFloat
 
     private let height: CGFloat = 320
+    private let revealOffset: CGFloat = 10
+    private let visibleDepth: CGFloat = 2
 
     var body: some View {
+        let deckWidth = max(0, availableWidth - revealOffset * visibleDepth)
+
         ZStack(alignment: .topLeading) {
-            ForEach(Array(images.prefix(3).enumerated().reversed()), id: \.offset) { index, image in
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: height)
-                    .clipped()
+            ForEach(Array(imageDataList.enumerated().reversed()), id: \.offset) { index, imageData in
+                AsyncDecodedImage(data: imageData) { image in
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: deckWidth, height: height)
+                        .clipped()
+                } placeholder: {
+                    Rectangle()
+                        .fill(Color.paper100)
+                        .frame(width: deckWidth, height: height)
+                }
                     .clipShape(RoundedRectangle(cornerRadius: Radius.image, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: Radius.image, style: .continuous)
@@ -100,11 +120,10 @@ private struct PhotoDeck: View {
                     )
                     .rotationEffect(.degrees(rotation(for: index)), anchor: .center)
                     .scaleEffect(1 - CGFloat(index) * 0.025, anchor: .center)
-                    .offset(x: CGFloat(index) * 10, y: CGFloat(index) * 11)
+                    .offset(x: CGFloat(index) * revealOffset, y: CGFloat(index) * 11)
                     .zIndex(Double(3 - index))
             }
         }
-        .padding(.bottom, 28)
         .overlay(alignment: .topTrailing) {
             Label("\(photoCount)", systemImage: "rectangle.stack.fill")
                 .font(.caption.weight(.semibold))
@@ -140,7 +159,4 @@ private struct PhotoDeck: View {
         }
     }
 
-    private var photoCount: Int {
-        images.count
-    }
 }
